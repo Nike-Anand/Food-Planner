@@ -1,0 +1,58 @@
+import { Dish } from '@/types/food';
+
+export const MOCK_DISHES: Dish[] = [
+  {
+    id: 'dish-1',
+    name: 'Truffle Mushroom Burger',
+    description: 'Brioche bun, wagyu beef, sauteed portobello, swiss cheese & black truffle aioli.',
+    price: 14.99,
+    rating: 4.8,
+    prepTimeMinutes: 20,
+    calories: 680,
+    category: 'Burgers',
+    imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=60',
+    ingredients: [
+      { id: 'ing-1', name: 'Brioche Bun', quantity: '1 unit', category: 'bakery', estimatedPrice: 1.5 },
+      { id: 'ing-2', name: 'Portobello Mushroom', quantity: '100g', category: 'produce', estimatedPrice: 2.2 },
+      { id: 'ing-3', name: 'Truffle Mayo', quantity: '30g', category: 'pantry', estimatedPrice: 3.0 },
+    ],
+  },
+  {
+    id: 'dish-2',
+    name: 'Spicy Salmon Poke Bowl',
+    description: 'Fresh Atlantic salmon, avocado, edamame, cucumber, spicy mayo over sushi rice.',
+    price: 16.5,
+    rating: 4.9,
+    prepTimeMinutes: 15,
+    calories: 520,
+    category: 'Bowls',
+    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60',
+    ingredients: [
+      { id: 'ing-4', name: 'Sushi Grade Salmon', quantity: '150g', category: 'meat', estimatedPrice: 7.0 },
+      { id: 'ing-5', name: 'Avocado', quantity: '1 whole', category: 'produce', estimatedPrice: 2.0 },
+      { id: 'ing-6', name: 'Edamame', quantity: '50g', category: 'produce', estimatedPrice: 1.5 },
+    ],
+  },
+  {
+    id: 'dish-3',
+    name: 'Crispy Garlic Butter Pad Thai',
+    description: 'Rice noodles wok-tossed with jumbo shrimp, roasted peanuts, bean sprouts & lime.',
+    price: 13.75,
+    rating: 4.7,
+    prepTimeMinutes: 18,
+    calories: 590,
+    category: 'Asian',
+    imageUrl: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=500&auto=format&fit=crop&q=60',
+  },
+  {
+    id: 'dish-4',
+    name: 'Mediterranean Quinoa Salad',
+    description: 'Kalamata olives, heirloom tomatoes, cucumber, feta cheese, lemon-herb dressing.',
+    price: 11.99,
+    rating: 4.6,
+    prepTimeMinutes: 12,
+    calories: 380,
+    category: 'Salads',
+    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&auto=format&fit=crop&q=60',
+  },
+];

@@ -1,30 +1,36 @@
-# Cook It Yourself 🍳
+# Food Planner & Cook It Yourself 🍳
 
-Feature 2 of the FlagSmith Hackathon — a mobile-first dish discovery app where users can search dishes, view cooking instructions, estimate costs, and order ingredients via an Instamart-style cart.
+A mobile-first web platform combining Food Ordering with a Recipe Maker & Cook It Yourself feature.
+
+## Features
+- **Feature 1 (Food Ordering)**: Restaurant / dish discovery and cart management.
+- **Feature 2 (Cook It Yourself / Recipe Maker)**: Dish discovery, cooking steps, pantry ingredients, cost estimation, and Instamart-style ingredient ordering.
+- **Feature Flags**: Powered by Flagsmith (`cook_yourself_enabled`).
+- **Database**: Supabase + PostgreSQL.
 
 ## Stack
-- **Next.js 15** (App Router)
+- **Next.js 15/16** (App Router)
 - **TypeScript**
 - **Tailwind CSS**
 - **Supabase + PostgreSQL**
-- **Flagsmith** (feature flag: `cook_yourself_enabled`)
-- **Vercel** (deployment)
+- **Flagsmith**
+- **Zustand**
 
 ## Setup
 
 ### 1. Supabase
 1. Create a new Supabase project
-2. Run `supabase/seed.sql` in the SQL editor — this creates tables and seeds 50 dishes
+2. Run `supabase/seed.sql` in the SQL editor — creates tables and seeds dishes & ingredients
 3. Copy your project URL and anon key
 
 ### 2. Flagsmith
 1. Create a project at [flagsmith.com](https://flagsmith.com)
-2. Create a feature flag named exactly: `cook_yourself_enabled`
+2. Create a feature flag named: `cook_yourself_enabled`
 3. Copy your **Server-side Environment Key** and **Client-side Environment Key**
 
 ### 3. Environment Variables
 Create `.env.local`:
-```
+```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 NEXT_PUBLIC_FLAGSMITH_ENV_KEY=your_flagsmith_client_key
@@ -41,15 +47,4 @@ npm run dev
 ```bash
 npx vercel --prod
 ```
-Add the 4 env vars in Vercel dashboard → Settings → Environment Variables.
-
-## Feature Flag Behavior
-| Flag `cook_yourself_enabled` | Behavior |
-|---|---|
-| ✅ ON | Full Cook It Yourself app |
-| ❌ OFF | "Feature Coming Soon" screen |
-
-## App Flow
-1. **Home** → Search/browse 50 dishes grouped by cuisine
-2. **Dish Detail** → Cooking steps + ingredients with cost estimate
-3. **Cart Drawer** → Add ingredients, see total, place Instamart order
+Add the environment variables in Vercel dashboard → Settings → Environment Variables.
