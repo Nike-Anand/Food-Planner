@@ -7,6 +7,7 @@ import { useCartStore } from '@/store/cartStore';
 
 export function MobileHeader() {
   const totalItems = useCartStore((state) => state.getTotalCount());
+  const hasHydrated = useCartStore((state) => state.hasHydrated);
 
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm">
@@ -28,11 +29,15 @@ export function MobileHeader() {
           aria-label="View Cart"
         >
           <ShoppingBag className="w-5 h-5" />
-          {totalItems > 0 && (
+          {!hasHydrated ? (
+            <span className="absolute top-1 right-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-slate-300 px-1 text-[10px] font-bold text-white" aria-hidden="true">
+              …
+            </span>
+          ) : totalItems > 0 ? (
             <span className="absolute top-1 right-1 flex items-center justify-center min-w-[18px] h-[18px] text-[10px] font-bold text-white bg-orange-600 rounded-full px-1 shadow-sm animate-pulse">
               {totalItems}
             </span>
-          )}
+          ) : null}
         </Link>
       </div>
     </header>

@@ -12,6 +12,7 @@ export function FoodCatalogView() {
   const [vegOnly, setVegOnly] = useState(false);
   const [addedDishId, setAddedDishId] = useState<string | null>(null);
   const addItem = useCartStore((state) => state.addItem);
+  const cartHasHydrated = useCartStore((state) => state.hasHydrated);
 
   const filteredDishes = useMemo(() => {
     return INDIAN_FOOD_ITEMS.filter((dish) => {
@@ -184,7 +185,8 @@ export function FoodCatalogView() {
                     </span>
                     <button
                       onClick={() => handleAddToCart(dish)}
-                      className={`h-7 px-2.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-all active:scale-95 shadow-xs ${
+                      disabled={!cartHasHydrated}
+                      className={`h-7 px-2.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-all active:scale-95 shadow-xs disabled:cursor-wait disabled:opacity-50 ${
                         addedDishId === dish.id
                           ? 'bg-emerald-600 text-white'
                           : 'bg-orange-600 text-white hover:bg-orange-700'

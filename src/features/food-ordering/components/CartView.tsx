@@ -6,6 +6,7 @@ import { useCartStore } from '@/store/cartStore'
 
 export function CartView() {
   const items = useCartStore((state) => state.items)
+  const hasHydrated = useCartStore((state) => state.hasHydrated)
   const totalCount = useCartStore((state) => state.getTotalCount())
   const updateQuantity = useCartStore((state) => state.updateQuantity)
   const removeItem = useCartStore((state) => state.removeItem)
@@ -28,7 +29,7 @@ export function CartView() {
         <div>
           <h1 className="text-xl font-bold text-slate-900">My Cart</h1>
           <p className="text-sm text-slate-500">
-            {totalCount} {totalCount === 1 ? 'item' : 'items'}
+            {hasHydrated ? `${totalCount} ${totalCount === 1 ? 'item' : 'items'}` : 'Restoring cart…'}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -46,7 +47,15 @@ export function CartView() {
         </div>
       </header>
 
-      {!hasItems ? (
+      {!hasHydrated ? (
+        <div
+          className="rounded-2xl border border-slate-100 bg-white px-5 py-10 text-center text-sm text-slate-500"
+          role="status"
+          aria-live="polite"
+        >
+          Restoring your cart…
+        </div>
+      ) : !hasItems ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center">
           <p className="font-semibold text-slate-800">Your cart is empty</p>
           <p className="mt-1 text-sm text-slate-500">Add food or recipe ingredients to get started.</p>

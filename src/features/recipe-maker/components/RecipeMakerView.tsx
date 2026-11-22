@@ -11,6 +11,7 @@ export function RecipeMakerView() {
   const router = useRouter();
   const { selectedPantryIngredients, togglePantryIngredient } = useRecipeStore();
   const addIngredientsToCart = useCartStore((state) => state.addIngredientsToCart);
+  const cartHasHydrated = useCartStore((state) => state.hasHydrated);
 
   const [hasGenerated, setHasGenerated] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -185,7 +186,8 @@ export function RecipeMakerView() {
 
                 <button
                   onClick={handleOrderMissingIngredients}
-                  className="w-full py-2.5 px-3 bg-orange-600 hover:bg-orange-700 active:scale-[0.98] text-white rounded-lg text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-1.5"
+                  disabled={!cartHasHydrated}
+                  className="w-full py-2.5 px-3 bg-orange-600 hover:bg-orange-700 active:scale-[0.98] text-white rounded-lg text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-1.5 disabled:cursor-wait disabled:opacity-50"
                 >
                   {orderedMissing ? (
                     <>
