@@ -3,50 +3,58 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Utensils, ChefHat, ShoppingCart, Compass } from 'lucide-react';
+import { Utensils, ChefHat, ShoppingCart, Clock } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 
 export function MobileNav() {
   const pathname = usePathname();
   const cartCount = useCartStore((state) => state.getTotalCount());
   const cartHasHydrated = useCartStore((state) => state.hasHydrated);
+  const activeOrder = useCartStore((state) => state.activeOrder);
+  const orders = useCartStore((state) => state.orders);
+
+  const hasOrders = orders.length > 0;
 
   const navItems = [
     {
       label: 'Order Food',
       href: '/order',
       icon: Utensils,
-      color: 'hover:text-orange-600',
     },
     {
       label: 'Recipe AI',
       href: '/recipe',
       icon: ChefHat,
-      color: 'hover:text-amber-600',
       badge: 'AI',
     },
     {
       label: 'My Cart',
       href: '/cart',
       icon: ShoppingCart,
-      color: 'hover:text-emerald-600',
       count: cartCount,
       loading: !cartHasHydrated,
+    },
+    {
+      label: 'My Orders',
+      href: activeOrder ? `/order-status/${activeOrder.orderId}` : '/orders',
+      icon: Clock,
+      hasPulse: activeOrder && activeOrder.status !== 'delivered',
+      badge: activeOrder && activeOrder.status !== 'delivered' ? 'LIVE' : undefined,
     },
   ];
 
   return (
-    <nav className="fixed bottom-0 max-w-[430px] w-full bg-white/95 backdrop-blur-lg border-t border-slate-200/80 px-6 py-2.5 z-40 flex items-center justify-around shadow-lg">
+    <nav className="fixed bottom-0 max-w-[430px] w-full bg-white/95 backdrop-blur-lg border-t border-slate-200/80 px-4 py-2 z-40 flex items-center justify-around shadow-lg">
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
 
         return (
           <Link
-            key={item.href}
+            key={item.label}
             href={item.href}
-            className={`relative flex min-h-12 flex-col items-center justify-center gap-1 px-3 py-1 transition-all ${
-              isActive ? 'text-orange-600 font-semibold' : 'text-slate-400 hover:text-slate-600'
+            className={`relative flex min-h-12 flex-col items-center justify-center gap-1 px-2.5 py-1 transition-all ${
+              isActive ? 'text-orange-600 font-bold' : 'text-slate-400 hover:text-slate-600'
             }`}
           >
             <div className="relative">
@@ -56,17 +64,17 @@ export function MobileNav() {
                   …
                 </span>
               ) : item.count && item.count > 0 ? (
-                <span className="absolute -top-1.5 -right-2.5 bg-orange-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                <span className="absolute -top-1.5 -right-2.5 bg-orange-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center shadow-xs">
                   {item.count}
                 </span>
               ) : null}
               {item.badge && (
-                <span className="absolute -top-1 -right-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-extrabold px-1 rounded-full">
+                <span className="absolute -top-1 -right-3.5 bg-emerald-600 text-white text-[8px] font-black px-1 rounded-full animate-pulse shadow-xs">
                   {item.badge}
                 </span>
               )}
             </div>
-            <span className="text-[11px] tracking-tight">{item.label}</span>
+            <span className="text-[10px] tracking-tight">{item.label}</span>
             {isActive && (
               <span className="absolute bottom-0 w-8 h-0.5 bg-orange-600 rounded-full" />
             )}

@@ -4,7 +4,16 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { ArrowRight, Minus, Plus, ShoppingBag, Trash2, ArrowRightCircle } from 'lucide-react'
+import {
+  ArrowRight,
+  Minus,
+  Plus,
+  ShoppingBag,
+  Trash2,
+  Bike,
+  Clock,
+  CheckCircle2,
+} from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
 import type { CartItem, CartItemSource } from '@/types/shared'
 import { formatCurrency } from '@/lib/currency'
@@ -108,6 +117,8 @@ function CartItemsSection({
 export function CartView() {
   const router = useRouter()
   const items = useCartStore((state) => state.items)
+  const orders = useCartStore((state) => state.orders)
+  const activeOrder = useCartStore((state) => state.activeOrder)
   const hasHydrated = useCartStore((state) => state.hasHydrated)
   const totalCount = useCartStore((state) => state.getTotalCount())
   const subtotal = useCartStore((state) => state.getSubtotal())
@@ -123,6 +134,31 @@ export function CartView() {
 
   return (
     <section className="space-y-4">
+      {/* Active Order Banner if order in progress */}
+      {activeOrder && (
+        <div className="overflow-hidden rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-500 to-teal-600 p-4 text-white shadow-md">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 backdrop-blur-xs">
+                <Bike className="h-4 w-4 text-white" />
+              </span>
+              <div>
+                <p className="text-xs font-black tracking-wide uppercase">Active Order Live</p>
+                <p className="text-[11px] text-emerald-100">
+                  {activeOrder.status === 'delivered' ? 'Delivered successfully' : 'Arriving in ~15-20 mins'}
+                </p>
+              </div>
+            </div>
+            <Link
+              href={`/order-status/${activeOrder.orderId}`}
+              className="inline-flex items-center gap-1 rounded-xl bg-white px-3 py-1.5 text-xs font-bold text-emerald-800 shadow-xs hover:bg-emerald-50 active:scale-95 transition-all"
+            >
+              Track <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+        </div>
+      )}
+
       <header className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">My Cart</h1>
@@ -131,17 +167,25 @@ export function CartView() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {orders.length > 0 && (
+            <Link
+              href="/orders"
+              className="inline-flex min-h-9 items-center gap-1 rounded-lg px-2.5 text-xs font-bold text-orange-600 hover:bg-orange-50 transition-colors"
+            >
+              <Clock className="h-3.5 w-3.5" />
+              Order History ({orders.length})
+            </Link>
+          )}
           {hasItems && (
             <button
               type="button"
               onClick={clearCart}
-              className="inline-flex min-h-9 items-center gap-1 rounded-lg px-2.5 text-xs font-semibold text-red-600 hover:bg-red-50"
+              className="inline-flex min-h-9 items-center gap-1 rounded-lg px-2 text-xs font-semibold text-red-500 hover:bg-red-50"
             >
               <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
               Clear
             </button>
           )}
-          <ShoppingBag className="h-5 w-5 text-orange-600" aria-hidden="true" />
         </div>
       </header>
 
@@ -154,16 +198,53 @@ export function CartView() {
           Restoring your cart…
         </div>
       ) : !hasItems ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-12 text-center">
-          <ShoppingBag className="mx-auto h-10 w-10 text-slate-300" />
-          <p className="mt-3 font-bold text-sm text-slate-800">Your cart is empty</p>
-          <p className="mt-1 text-xs text-slate-400">Add delicious food or recipe ingredients to order.</p>
-          <Link
-            href="/order"
-            className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-orange-600 px-5 text-xs font-bold text-white shadow-xs hover:bg-orange-700"
-          >
-            Browse Food Catalog <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-          </Link>
+        <div className="space-y-4">
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center">
+            <ShoppingBag className="mx-auto h-10 w-10 text-slate-300" />
+            <p className="mt-3 font-bold text-sm text-slate-800">Your cart is empty</p>
+            <p className="mt-1 text-xs text-slate-400">Add delicious food or recipe ingredients to order.</p>
+            <Link
+              href="/order"
+              className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-orange-600 px-5 text-xs font-bold text-white shadow-xs hover:bg-orange-700 active:scale-95 transition-all"
+            >
+              Browse Food Catalog <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
+          </div>
+
+          {/* Past Orders List right on Empty Cart */}
+          {orders.length > 0 && (
+            <section className="space-y-2.5 pt-2">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 px-1">
+                Recent Orders ({orders.length})
+              </h2>
+              <div className="space-y-2.5">
+                {orders.map((ord) => (
+                  <div
+                    key={ord.orderId}
+                    className="overflow-hidden rounded-2xl border border-slate-100 bg-white p-3.5 shadow-xs flex items-center justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-mono text-xs font-bold text-slate-900">{ord.orderId}</span>
+                        <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[9px] font-extrabold uppercase text-emerald-700">
+                          {ord.status}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-[11px] text-slate-500">
+                        {ord.items.length} items · {formatCurrency(ord.grandTotal, 'INR')}
+                      </p>
+                    </div>
+                    <Link
+                      href={`/order-status/${ord.orderId}`}
+                      className="rounded-xl bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-800 hover:bg-slate-200"
+                    >
+                      View Status
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       ) : (
         <div className="space-y-3.5">
