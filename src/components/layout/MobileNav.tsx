@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Utensils, ChefHat, ShoppingCart, Clock } from 'lucide-react';
@@ -13,7 +13,19 @@ export function MobileNav() {
   const activeOrder = useCartStore((state) => state.activeOrder);
   const orders = useCartStore((state) => state.orders);
 
-  const hasOrders = orders.length > 0;
+  // Flagsmith feature flag state
+  const [recipeEnabled, setRecipeEnabled] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetch('/api/flags')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.flags?.cook_yourself_enabled !== undefined) {
+          setRecipeEnabled(data.flags.cook_yourself_enabled);
+        }
+      })
+      .catch((err) => console.warn('Could not read flags:', err));
+  }, []);
 
   const navItems = [
     {
@@ -25,7 +37,8 @@ export function MobileNav() {
       label: 'Recipe AI',
       href: '/recipe',
       icon: ChefHat,
-      badge: 'AI',
+      badge: recipeEnabled ? 'AI' : 'OFF',
+      badgeColor: recipeEnabled ? undefined : 'bg-slate-400',
     },
     {
       label: 'My Cart',
@@ -69,7 +82,11 @@ export function MobileNav() {
                 </span>
               ) : null}
               {item.badge && (
-                <span className="absolute -top-1 -right-3.5 bg-emerald-600 text-white text-[8px] font-black px-1 rounded-full animate-pulse shadow-xs">
+                <span
+                  className={`absolute -top-1 -right-3.5 text-white text-[8px] font-black px-1 rounded-full shadow-xs ${
+                    item.badgeColor || (item.badge === 'LIVE' ? 'bg-emerald-600 animate-pulse' : 'bg-gradient-to-r from-amber-500 to-orange-500')
+                  }`}
+                >
                   {item.badge}
                 </span>
               )}
