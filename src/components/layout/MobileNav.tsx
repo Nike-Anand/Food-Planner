@@ -9,6 +9,7 @@ import { useCartStore } from '@/store/cartStore';
 export function MobileNav() {
   const pathname = usePathname();
   const cartCount = useCartStore((state) => state.getTotalCount());
+  const cartHasHydrated = useCartStore((state) => state.hasHydrated);
 
   const navItems = [
     {
@@ -30,6 +31,7 @@ export function MobileNav() {
       icon: ShoppingCart,
       color: 'hover:text-emerald-600',
       count: cartCount,
+      loading: !cartHasHydrated,
     },
   ];
 
@@ -43,13 +45,17 @@ export function MobileNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex flex-col items-center gap-1 relative px-3 py-1 transition-all ${
+            className={`relative flex min-h-12 flex-col items-center justify-center gap-1 px-3 py-1 transition-all ${
               isActive ? 'text-orange-600 font-semibold' : 'text-slate-400 hover:text-slate-600'
             }`}
           >
             <div className="relative">
               <Icon className={`w-5 h-5 transition-transform ${isActive ? 'scale-110' : ''}`} />
-              {item.count && item.count > 0 ? (
+              {item.loading ? (
+                <span className="absolute -top-1.5 -right-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-slate-300 px-1 text-[10px] font-bold text-white" aria-hidden="true">
+                  …
+                </span>
+              ) : item.count && item.count > 0 ? (
                 <span className="absolute -top-1.5 -right-2.5 bg-orange-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
                   {item.count}
                 </span>

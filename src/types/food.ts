@@ -1,16 +1,27 @@
-import { Ingredient } from './shared';
+import type { Currency, Ingredient } from './shared';
+
+export type FoodCategory =
+  | 'All'
+  | 'Meals & Rice'
+  | 'Breads & Curries'
+  | 'Street Food & Chaat'
+  | 'Snacks & Fast Food'
+  | 'South Indian'
+  | 'Desserts & Beverages';
 
 export interface Dish {
   id: string;
   name: string;
   description: string;
   price: number;
+  currency: Currency;
   rating: number;
   prepTimeMinutes: number;
   calories: number;
-  category: 'Bowls' | 'Burgers' | 'Asian' | 'Salads' | 'Desserts' | 'Drinks';
+  category: FoodCategory;
   imageUrl: string;
-  isVegetarian?: boolean;
+  isVegetarian: boolean;
+  tags?: string[];
   ingredients?: Ingredient[];
 }
 
