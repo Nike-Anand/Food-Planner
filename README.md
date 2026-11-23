@@ -8,6 +8,10 @@ A mobile-first web platform combining Food Ordering with a Recipe Maker & Cook I
 - **Feature Flags**: Flagsmith controls Feature 2 only (`cook_yourself_enabled`).
 - **Database**: Supabase + PostgreSQL backs the Feature 2 dish and ingredient API.
 
+## Currency and Checkout Policy
+
+All food and recipe ingredient prices are displayed in INR. Recipe sample estimates use a fixed demo conversion rate of ₹85 per USD; food menu prices and food ingredient estimates are already in INR. The shared `/cart` shows separate subtotals and checkout actions for each feature. Those checkout actions are demo-only notices: they do not process payment or remove items.
+
 ## Stack
 - **Next.js 15/16** (App Router)
 - **TypeScript**

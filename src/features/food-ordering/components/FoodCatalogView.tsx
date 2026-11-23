@@ -4,7 +4,8 @@ import React, { useState, useMemo } from 'react';
 import { INDIAN_FOOD_ITEMS, FOOD_CATEGORIES } from '../data/mockDishes';
 import { useCartStore } from '@/store/cartStore';
 import { Star, Clock, Flame, Plus, Check, Search, Sparkles, SlidersHorizontal } from 'lucide-react';
-import { Dish } from '@/types/food';
+import type { Dish } from '@/types/food';
+import { formatCurrency } from '@/lib/currency';
 
 export function FoodCatalogView() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -33,6 +34,7 @@ export function FoodCatalogView() {
       id: dish.id,
       name: dish.name,
       price: dish.price,
+      currency: dish.currency,
       imageUrl: dish.imageUrl,
       source: 'food_menu',
     });
@@ -187,7 +189,7 @@ export function FoodCatalogView() {
 
                   <div className="flex items-center gap-2">
                     <span className="font-extrabold text-xs sm:text-sm text-slate-900">
-                      ₹{dish.price}
+                      {formatCurrency(dish.price, dish.currency)}
                     </span>
                     <button
                       type="button"

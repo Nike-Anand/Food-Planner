@@ -6,6 +6,7 @@ import { useRecipeStore } from '@/store/recipeStore';
 import { useCartStore } from '@/store/cartStore';
 import { Sparkles, Check, ShoppingBag, Clock, ChefHat, Flame, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { formatCurrency } from '@/lib/currency';
 
 export function RecipeMakerView() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export function RecipeMakerView() {
   );
 
   const missingTotalCost = missingIngredients.reduce(
-    (acc, curr) => acc + (curr.estimatedPrice || 0),
+    (acc, curr) => acc + curr.estimatedPrice,
     0
   );
 
@@ -157,7 +158,7 @@ export function RecipeMakerView() {
                         </span>
                       ) : (
                         <span className="text-[11px] font-semibold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full">
-                          +${ing.estimatedPrice?.toFixed(2)}
+                          +{formatCurrency(ing.estimatedPrice, ing.currency)}
                         </span>
                       )}
                     </div>
@@ -180,7 +181,7 @@ export function RecipeMakerView() {
                     </p>
                   </div>
                   <span className="text-xs font-extrabold text-orange-900">
-                    ${missingTotalCost.toFixed(2)}
+                    {formatCurrency(missingTotalCost, 'INR')}
                   </span>
                 </div>
 
@@ -191,11 +192,11 @@ export function RecipeMakerView() {
                 >
                   {orderedMissing ? (
                     <>
-                      <Check className="w-3.5 h-3.5" /> Added to Food Cart! Opening...
+                      <Check className="w-3.5 h-3.5" /> Added to Recipe Cart! Opening...
                     </>
                   ) : (
                     <>
-                      1-Click Order Missing Ingredients
+                      Add Missing Ingredients to Recipe Cart
                       <ArrowRight className="w-3.5 h-3.5" />
                     </>
                   )}

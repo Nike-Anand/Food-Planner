@@ -1,6 +1,50 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { CartItem, Ingredient } from '@/types/shared';
+import type { CartItem, CartItemSource, Ingredient } from '@/types/shared';
+import { convertUsdToInr } from '@/lib/currency';
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function migratePersistedCart(
+  persistedState: unknown,
+  version: number
+): { items: CartItem[] } {
+  if (version > 0) {
+    throw new Error(`Unsupported persisted cart version: ${version}.`);
+  }
+
+  if (!isRecord(persistedState) || !Array.isArray(persistedState.items)) {
+    throw new Error('Cannot migrate persisted cart: items must be an array.');
+  }
+
+  const items = persistedState.items.map((storedItem): CartItem => {
+    if (
+      !isRecord(storedItem) ||
+      typeof storedItem.id !== 'string' ||
+      typeof storedItem.name !== 'string' ||
+      typeof storedItem.price !== 'number' ||
+      !Number.isFinite(storedItem.price) ||
+      typeof storedItem.quantity !== 'number' ||
+      !Number.isInteger(storedItem.quantity) ||
+      (storedItem.source !== 'food_menu' && storedItem.source !== 'recipe_ingredient') ||
+      (storedItem.currency !== undefined && storedItem.currency !== 'INR') ||
+      (storedItem.imageUrl !== undefined && typeof storedItem.imageUrl !== 'string')
+    ) {
+      throw new Error('Cannot migrate persisted cart: an item has an invalid shape.');
+    }
+
+    const price =
+      storedItem.currency === 'INR' || storedItem.source === 'food_menu'
+        ? storedItem.price
+        : convertUsdToInr(storedItem.price);
+
+    return { ...storedItem, price, currency: 'INR' } as CartItem;
+  });
+
+  return { items };
+}
 
 interface CartState {
   items: CartItem[];
@@ -14,7 +58,7 @@ interface CartState {
   addIngredientsToCart: (ingredients: Ingredient[], recipeTitle?: string) => void;
   // Computed helpers
   getTotalCount: () => number;
-  getSubtotal: () => number;
+  getSubtotal: (source: CartItemSource) => number;
 }
 
 export const useCartStore = create<CartState>()(
@@ -66,7 +110,8 @@ export const useCartStore = create<CartState>()(
           const newItems: CartItem[] = ingredients.map((ing) => ({
             id: `ing-${ing.id}-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
             name: `${ing.name} (${ing.quantity})`,
-            price: ing.estimatedPrice || 2.49,
+            price: ing.estimatedPrice,
+            currency: ing.currency,
             quantity: 1,
             source: 'recipe_ingredient',
             notes: recipeTitle ? `For: ${recipeTitle}` : undefined,
@@ -79,13 +124,19 @@ export const useCartStore = create<CartState>()(
         return get().items.reduce((acc, item) => acc + item.quantity, 0);
       },
 
-      getSubtotal: () => {
-        return get().items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+      getSubtotal: (source) => {
+        return get().items.reduce(
+          (subtotal, item) =>
+            subtotal + (item.source === source ? item.price * item.quantity : 0),
+          0
+        );
       },
     }),
     {
       name: 'foodhub-cart',
+      version: 1,
       partialize: (state) => ({ items: state.items }),
+      migrate: migratePersistedCart,
       skipHydration: true,
       onRehydrateStorage: () => (_state, error) => {
         if (error) {

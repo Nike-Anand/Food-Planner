@@ -1,4 +1,4 @@
-import { Ingredient } from './shared';
+import type { Currency, Ingredient } from './shared';
 
 export type FoodCategory =
   | 'All'
@@ -14,6 +14,7 @@ export interface Dish {
   name: string;
   description: string;
   price: number;
+  currency: Currency;
   rating: number;
   prepTimeMinutes: number;
   calories: number;
