@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
 
@@ -37,7 +38,7 @@ export function CartView() {
             <button
               type="button"
               onClick={clearCart}
-              className="inline-flex items-center gap-1 rounded-lg px-2 py-2 text-xs font-semibold text-red-600 hover:bg-red-50"
+              className="inline-flex min-h-12 items-center gap-1 rounded-lg px-3 text-xs font-semibold text-red-600 hover:bg-red-50"
             >
               <Trash2 className="h-4 w-4" aria-hidden="true" />
               Clear cart
@@ -61,7 +62,7 @@ export function CartView() {
           <p className="mt-1 text-sm text-slate-500">Add food or recipe ingredients to get started.</p>
           <Link
             href="/order"
-            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white"
+            className="mt-4 inline-flex min-h-12 items-center gap-2 rounded-xl bg-orange-600 px-4 text-sm font-semibold text-white"
           >
             Browse food <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
@@ -72,25 +73,40 @@ export function CartView() {
             {items.map((item) => (
               <li
                 key={`${item.source}:${item.id}`}
-                className="space-y-3 p-4"
+                className="flex gap-3 p-4"
               >
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-slate-900">{item.name}</p>
-                  <p className="text-xs text-slate-500">
-                    {item.source === 'food_menu' ? 'Food menu' : 'Recipe ingredient'}
-                  </p>
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100">
+                  {item.imageUrl ? (
+                    <Image
+                      src={item.imageUrl}
+                      alt=""
+                      width={56}
+                      height={56}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <ShoppingBag className="h-5 w-5 text-slate-400" aria-hidden="true" />
+                  )}
                 </div>
-                <div className="flex items-center justify-between gap-3">
-                  <p className="shrink-0 text-sm font-semibold text-slate-800">
-                    {item.source === 'food_menu' ? '₹' : '$'}
-                    {(item.price * item.quantity).toFixed(2)}
-                  </p>
-                  <div className="flex items-center gap-1">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-slate-900">{item.name}</p>
+                      <p className="text-xs text-slate-500">
+                        {item.source === 'food_menu' ? 'Food menu' : 'Recipe ingredient'}
+                      </p>
+                    </div>
+                    <p className="shrink-0 text-sm font-semibold text-slate-800">
+                      {item.source === 'food_menu' ? '₹' : '$'}
+                      {(item.price * item.quantity).toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="mt-2 flex items-center justify-end">
                     <button
                       type="button"
                       onClick={() => updateQuantity(item.id, -1)}
                       aria-label={`Decrease quantity of ${item.name}`}
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50"
+                      className="flex h-12 w-12 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50"
                     >
                       <Minus className="h-4 w-4" aria-hidden="true" />
                     </button>
@@ -101,7 +117,7 @@ export function CartView() {
                       type="button"
                       onClick={() => updateQuantity(item.id, 1)}
                       aria-label={`Increase quantity of ${item.name}`}
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50"
+                      className="flex h-12 w-12 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50"
                     >
                       <Plus className="h-4 w-4" aria-hidden="true" />
                     </button>
@@ -109,7 +125,7 @@ export function CartView() {
                       type="button"
                       onClick={() => removeItem(item.id)}
                       aria-label={`Remove ${item.name} from cart`}
-                      className="ml-1 flex h-9 w-9 items-center justify-center rounded-lg text-red-600 hover:bg-red-50"
+                      className="ml-1 flex h-12 w-12 items-center justify-center rounded-lg text-red-600 hover:bg-red-50"
                     >
                       <Trash2 className="h-4 w-4" aria-hidden="true" />
                     </button>

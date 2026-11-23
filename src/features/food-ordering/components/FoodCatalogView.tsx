@@ -52,12 +52,14 @@ export function FoodCatalogView() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search 24 delicious Indian foods & snacks..."
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all shadow-xs"
+            className="min-h-12 w-full pl-10 pr-20 py-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all shadow-xs"
           />
           {searchQuery && (
             <button
+              type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600"
+              aria-label="Clear search"
+              className="absolute right-1 top-1/2 flex min-h-12 -translate-y-1/2 items-center rounded-lg px-3 text-xs text-slate-500 hover:text-slate-700"
             >
               Clear
             </button>
@@ -69,8 +71,10 @@ export function FoodCatalogView() {
             Showing <span className="font-bold text-slate-800">{filteredDishes.length}</span> dishes
           </div>
           <button
+            type="button"
             onClick={() => setVegOnly(!vegOnly)}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all border ${
+            aria-pressed={vegOnly}
+            className={`flex min-h-12 items-center gap-1.5 px-3 rounded-full text-[11px] font-semibold transition-all border ${
               vegOnly
                 ? 'bg-emerald-50 border-emerald-500 text-emerald-700 shadow-xs'
                 : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
@@ -90,9 +94,11 @@ export function FoodCatalogView() {
       <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar">
         {FOOD_CATEGORIES.map((cat) => (
           <button
+            type="button"
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-3 py-1.5 rounded-xl text-[11px] font-semibold whitespace-nowrap transition-all ${
+            aria-pressed={selectedCategory === cat}
+            className={`flex min-h-12 items-center px-3 rounded-xl text-[11px] font-semibold whitespace-nowrap transition-all ${
               selectedCategory === cat
                 ? 'bg-orange-600 text-white shadow-sm shadow-orange-500/20 scale-[1.02]'
                 : 'bg-white text-slate-600 border border-slate-200/80 hover:bg-slate-50'
@@ -184,14 +190,15 @@ export function FoodCatalogView() {
                       ₹{dish.price}
                     </span>
                     <button
+                      type="button"
                       onClick={() => handleAddToCart(dish)}
                       disabled={!cartHasHydrated}
-                      className={`h-7 px-2.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-all active:scale-95 shadow-xs disabled:cursor-wait disabled:opacity-50 ${
+                      className={`min-h-12 px-3 rounded-lg text-xs font-bold flex items-center gap-1 transition-all active:scale-95 shadow-xs disabled:cursor-wait disabled:opacity-50 ${
                         addedDishId === dish.id
                           ? 'bg-emerald-600 text-white'
                           : 'bg-orange-600 text-white hover:bg-orange-700'
                       }`}
-                      aria-label="Add to cart"
+                      aria-label={`Add ${dish.name} to cart`}
                     >
                       {addedDishId === dish.id ? (
                         <>

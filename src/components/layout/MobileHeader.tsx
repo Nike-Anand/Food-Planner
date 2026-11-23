@@ -11,7 +11,7 @@ export function MobileHeader() {
 
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm">
-      <Link href="/" className="flex items-center gap-2 group">
+      <Link href="/" className="group flex min-h-12 items-center gap-2">
         <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-orange-500 to-amber-400 flex items-center justify-center text-white shadow-md shadow-orange-500/20 group-hover:scale-105 transition-transform">
           <UtensilsCrossed className="w-4 h-4" />
         </div>
@@ -25,7 +25,7 @@ export function MobileHeader() {
       <div className="flex items-center gap-2">
         <Link
           href="/cart"
-          className="relative p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition-colors active:scale-95"
+          className="relative flex h-12 w-12 items-center justify-center rounded-xl text-slate-700 transition-colors hover:bg-slate-100 active:scale-95"
           aria-label="View Cart"
         >
           <ShoppingBag className="w-5 h-5" />
