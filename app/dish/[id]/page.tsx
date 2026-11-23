@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { Dish, Ingredient, CartItem } from '@/lib/types'
+import { useCartStore } from '@/store/cartStore'
 import IngredientList from '@/components/IngredientList'
 import CostEstimate from '@/components/CostEstimate'
 import CartDrawer from '@/components/CartDrawer'
@@ -48,6 +49,7 @@ export default function DishPage() {
   const [toasts, setToasts]           = useState<ToastItem[]>([])
   const [tab, setTab]                 = useState<'ingredients' | 'steps'>('ingredients')
   const [fav, setFav]                 = useState(false)
+  const addIngredientsToCart          = useCartStore((state) => state.addIngredientsToCart)
 
   const toast = useCallback((message: string, type: ToastItem['type'] = 'success') => {
     setToasts(p => [...p, { id: Math.random().toString(36).slice(2), message, type }])
@@ -88,7 +90,19 @@ export default function DishPage() {
 
   const addAll = () => {
     ingredients.forEach(ing => setCart(prev => prev.find(c => c.ingredient.id === ing.id) ? prev : [...prev, { ingredient: ing, quantity: 1 }]))
-    toast(`All ${ingredients.length} ingredients added 🛒`)
+    // Also sync to global central cart store
+    addIngredientsToCart(
+      ingredients.map(ing => ({
+        id: ing.id,
+        name: ing.name,
+        quantity: `${ing.quantity || ''} ${ing.unit || ''}`.trim() || '1 portion',
+        category: 'pantry',
+        estimatedPrice: Number(ing.price_estimate) || 25,
+        currency: 'INR',
+      })),
+      dish?.name
+    )
+    toast(`All ${ingredients.length} ingredients added to basket & main cart 🛒`)
     setShowCart(true)
   }
 
