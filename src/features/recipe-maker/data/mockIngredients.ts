@@ -1,16 +1,15 @@
 import type { Ingredient } from '@/types/shared';
 import type { Recipe } from '@/types/recipe';
-import { convertUsdToInr } from '@/lib/currency';
 
 export const PANTRY_OPTIONS: Ingredient[] = [
-  { id: 'ing-eggs', name: 'Eggs (2)', quantity: '2 units', category: 'dairy', estimatedPrice: convertUsdToInr(0.99), currency: 'INR' },
-  { id: 'ing-tomato', name: 'Ripe Tomatoes', quantity: '2 medium', category: 'produce', estimatedPrice: convertUsdToInr(1.49), currency: 'INR' },
-  { id: 'ing-olive-oil', name: 'Extra Virgin Olive Oil', quantity: '2 tbsp', category: 'pantry', estimatedPrice: convertUsdToInr(1.2), currency: 'INR' },
-  { id: 'ing-garlic', name: 'Garlic Cloves', quantity: '3 cloves', category: 'produce', estimatedPrice: convertUsdToInr(0.5), currency: 'INR' },
-  { id: 'ing-pasta', name: 'Fettuccine Pasta', quantity: '250g', category: 'pantry', estimatedPrice: convertUsdToInr(1.89), currency: 'INR' },
-  { id: 'ing-parmesan', name: 'Parmesan Cheese', quantity: '50g', category: 'dairy', estimatedPrice: convertUsdToInr(2.99), currency: 'INR' },
-  { id: 'ing-chicken', name: 'Chicken Breast', quantity: '300g', category: 'meat', estimatedPrice: convertUsdToInr(4.5), currency: 'INR' },
-  { id: 'ing-basil', name: 'Fresh Basil Leaves', quantity: 'handful', category: 'produce', estimatedPrice: convertUsdToInr(1.99), currency: 'INR' },
+  { id: 'ing-eggs',      name: 'Eggs',               quantity: 'Pack of 6',    category: 'dairy',   estimatedPrice: 75,  currency: 'INR' },
+  { id: 'ing-tomato',    name: 'Tomatoes',            quantity: '500g pack',    category: 'produce', estimatedPrice: 30,  currency: 'INR' },
+  { id: 'ing-olive-oil', name: 'Olive Oil',           quantity: '250ml bottle', category: 'pantry',  estimatedPrice: 220, currency: 'INR' },
+  { id: 'ing-garlic',    name: 'Garlic',              quantity: '100g pack',    category: 'produce', estimatedPrice: 25,  currency: 'INR' },
+  { id: 'ing-pasta',     name: 'Pasta',               quantity: '500g pack',    category: 'pantry',  estimatedPrice: 80,  currency: 'INR' },
+  { id: 'ing-parmesan',  name: 'Parmesan Cheese',     quantity: '100g pack',    category: 'dairy',   estimatedPrice: 280, currency: 'INR' },
+  { id: 'ing-chicken',   name: 'Chicken Breast',      quantity: '500g pack',    category: 'meat',    estimatedPrice: 180, currency: 'INR' },
+  { id: 'ing-basil',     name: 'Fresh Basil',         quantity: '50g bunch',    category: 'produce', estimatedPrice: 40,  currency: 'INR' },
 ];
 
 export const SAMPLE_RECIPE: Recipe = {
@@ -23,17 +22,18 @@ export const SAMPLE_RECIPE: Recipe = {
   calories: 340,
   imageUrl: 'https://images.unsplash.com/photo-1590412200988-a436970781fa?w=500&auto=format&fit=crop&q=60',
   ingredients: [
-    { id: 'ing-eggs', name: 'Eggs', quantity: '3 large', category: 'dairy', estimatedPrice: convertUsdToInr(1.2), currency: 'INR' },
-    { id: 'ing-tomato', name: 'Crushed Heirloom Tomatoes', quantity: '400g can', category: 'produce', estimatedPrice: convertUsdToInr(2.49), currency: 'INR' },
-    { id: 'ing-olive-oil', name: 'Olive Oil', quantity: '2 tbsp', category: 'pantry', estimatedPrice: convertUsdToInr(0.8), currency: 'INR' },
-    // Missing ingredients needed from store
-    { id: 'ing-bell-pepper', name: 'Red Bell Pepper', quantity: '1 sliced', category: 'produce', estimatedPrice: convertUsdToInr(1.89), currency: 'INR' },
-    { id: 'ing-feta', name: 'Crumbled Greek Feta', quantity: '60g', category: 'dairy', estimatedPrice: convertUsdToInr(3.25), currency: 'INR' },
+    { id: 'ing-eggs',        name: 'Eggs',              quantity: 'Pack of 6',      category: 'dairy',   estimatedPrice: 75,  currency: 'INR' },
+    { id: 'ing-tomato',      name: 'Tomatoes',          quantity: '500g pack',      category: 'produce', estimatedPrice: 30,  currency: 'INR' },
+    { id: 'ing-olive-oil',   name: 'Olive Oil',         quantity: '250ml bottle',   category: 'pantry',  estimatedPrice: 220, currency: 'INR' },
+    { id: 'ing-bell-pepper', name: 'Red Bell Pepper',   quantity: '2 pcs (250g)',   category: 'produce', estimatedPrice: 55,  currency: 'INR' },
+    { id: 'ing-feta',        name: 'Feta Cheese',       quantity: '200g pack',      category: 'dairy',   estimatedPrice: 320, currency: 'INR' },
+    { id: 'ing-cumin',       name: 'Cumin Powder',      quantity: '100g pack',      category: 'spices',  estimatedPrice: 45,  currency: 'INR' },
+    { id: 'ing-paprika',     name: 'Smoked Paprika',    quantity: '50g pack',       category: 'spices',  estimatedPrice: 60,  currency: 'INR' },
   ],
   steps: [
-    { stepNumber: 1, instruction: 'Heat olive oil in a skillet over medium heat. Sauté sliced bell peppers and garlic until soft.' },
-    { stepNumber: 2, instruction: 'Pour in crushed tomatoes, season with cumin, paprika, salt, and simmer for 10 minutes.' },
-    { stepNumber: 3, instruction: 'Create small wells in sauce and crack eggs into them. Cover and cook for 5-7 minutes until whites are set.' },
-    { stepNumber: 4, instruction: 'Top with crumbled feta and fresh herbs. Serve hot with crusty sourdough bread.' },
+    { stepNumber: 1, instruction: 'Heat olive oil in a skillet over medium heat. Sauté sliced bell peppers and garlic until soft.', durationMinutes: 5 },
+    { stepNumber: 2, instruction: 'Pour in crushed tomatoes, season with cumin, paprika, and salt. Simmer for 10 minutes until sauce thickens.', durationMinutes: 10, tip: 'Stir occasionally and add a splash of water if it gets too thick.' },
+    { stepNumber: 3, instruction: 'Create small wells in the sauce and crack eggs into them. Cover and cook for 5–7 minutes until whites are set but yolks are still runny.', durationMinutes: 7 },
+    { stepNumber: 4, instruction: 'Top with crumbled feta and fresh herbs. Serve hot with crusty bread.', tip: 'A drizzle of olive oil on top before serving elevates the dish.' },
   ],
 };
