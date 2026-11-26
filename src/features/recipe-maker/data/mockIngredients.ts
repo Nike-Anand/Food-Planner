@@ -1,39 +1,64 @@
 import type { Ingredient } from '@/types/shared';
 import type { Recipe } from '@/types/recipe';
-import { convertUsdToInr } from '@/lib/currency';
+import type { Dish } from '@/types/food';
+import { INDIAN_FOOD_ITEMS } from '@/features/food-ordering/data/mockDishes';
 
 export const PANTRY_OPTIONS: Ingredient[] = [
-  { id: 'ing-eggs', name: 'Eggs (2)', quantity: '2 units', category: 'dairy', estimatedPrice: convertUsdToInr(0.99), currency: 'INR' },
-  { id: 'ing-tomato', name: 'Ripe Tomatoes', quantity: '2 medium', category: 'produce', estimatedPrice: convertUsdToInr(1.49), currency: 'INR' },
-  { id: 'ing-olive-oil', name: 'Extra Virgin Olive Oil', quantity: '2 tbsp', category: 'pantry', estimatedPrice: convertUsdToInr(1.2), currency: 'INR' },
-  { id: 'ing-garlic', name: 'Garlic Cloves', quantity: '3 cloves', category: 'produce', estimatedPrice: convertUsdToInr(0.5), currency: 'INR' },
-  { id: 'ing-pasta', name: 'Fettuccine Pasta', quantity: '250g', category: 'pantry', estimatedPrice: convertUsdToInr(1.89), currency: 'INR' },
-  { id: 'ing-parmesan', name: 'Parmesan Cheese', quantity: '50g', category: 'dairy', estimatedPrice: convertUsdToInr(2.99), currency: 'INR' },
-  { id: 'ing-chicken', name: 'Chicken Breast', quantity: '300g', category: 'meat', estimatedPrice: convertUsdToInr(4.5), currency: 'INR' },
-  { id: 'ing-basil', name: 'Fresh Basil Leaves', quantity: 'handful', category: 'produce', estimatedPrice: convertUsdToInr(1.99), currency: 'INR' },
+  // Produce
+  { id: 'ing-tomato',       name: '🍅 Tomatoes',          quantity: '500g pack',    category: 'produce', estimatedPrice: 30,  currency: 'INR' },
+  { id: 'ing-onion',        name: '🧅 Onion',             quantity: '500g pack',    category: 'produce', estimatedPrice: 25,  currency: 'INR' },
+  { id: 'ing-garlic',       name: '🧄 Garlic',            quantity: '100g pack',    category: 'produce', estimatedPrice: 25,  currency: 'INR' },
+  { id: 'ing-ginger',       name: '🫚 Ginger',            quantity: '100g pack',    category: 'produce', estimatedPrice: 20,  currency: 'INR' },
+  { id: 'ing-potato',       name: '🥔 Potato',            quantity: '1kg pack',     category: 'produce', estimatedPrice: 35,  currency: 'INR' },
+  { id: 'ing-spinach',      name: '🥬 Spinach',           quantity: '250g bunch',   category: 'produce', estimatedPrice: 30,  currency: 'INR' },
+  { id: 'ing-bell-pepper',  name: '🫑 Bell Pepper',       quantity: '2 pcs (250g)', category: 'produce', estimatedPrice: 55,  currency: 'INR' },
+  { id: 'ing-lemon',        name: '🍋 Lemon',             quantity: 'Pack of 4',    category: 'produce', estimatedPrice: 20,  currency: 'INR' },
+  { id: 'ing-coriander',    name: '🌿 Coriander',         quantity: '50g bunch',    category: 'produce', estimatedPrice: 15,  currency: 'INR' },
+  { id: 'ing-basil',        name: '🌿 Fresh Basil',       quantity: '50g bunch',    category: 'produce', estimatedPrice: 40,  currency: 'INR' },
+  // Dairy
+  { id: 'ing-eggs',         name: '🥚 Eggs',              quantity: 'Pack of 6',    category: 'dairy',   estimatedPrice: 75,  currency: 'INR' },
+  { id: 'ing-milk',         name: '🥛 Milk',              quantity: '500ml pack',   category: 'dairy',   estimatedPrice: 30,  currency: 'INR' },
+  { id: 'ing-butter',       name: '🧈 Butter',            quantity: '100g pack',    category: 'dairy',   estimatedPrice: 55,  currency: 'INR' },
+  { id: 'ing-paneer',       name: '🧀 Paneer',            quantity: '200g pack',    category: 'dairy',   estimatedPrice: 90,  currency: 'INR' },
+  { id: 'ing-curd',         name: '🥣 Curd / Yogurt',     quantity: '400g pack',    category: 'dairy',   estimatedPrice: 45,  currency: 'INR' },
+  { id: 'ing-cream',        name: '🍶 Fresh Cream',       quantity: '200ml pack',   category: 'dairy',   estimatedPrice: 55,  currency: 'INR' },
+  { id: 'ing-parmesan',     name: '🧀 Parmesan',          quantity: '100g pack',    category: 'dairy',   estimatedPrice: 280, currency: 'INR' },
+  // Meat
+  { id: 'ing-chicken',      name: '🍗 Chicken Breast',    quantity: '500g pack',    category: 'meat',    estimatedPrice: 180, currency: 'INR' },
+  { id: 'ing-mutton',       name: '🥩 Mutton',            quantity: '500g pack',    category: 'meat',    estimatedPrice: 380, currency: 'INR' },
+  { id: 'ing-prawns',       name: '🦐 Prawns',            quantity: '250g pack',    category: 'meat',    estimatedPrice: 220, currency: 'INR' },
+  // Pantry
+  { id: 'ing-rice',         name: '🍚 Basmati Rice',      quantity: '1kg pack',     category: 'pantry',  estimatedPrice: 90,  currency: 'INR' },
+  { id: 'ing-pasta',        name: '🍝 Pasta',             quantity: '500g pack',    category: 'pantry',  estimatedPrice: 80,  currency: 'INR' },
+  { id: 'ing-olive-oil',    name: '🫙 Olive Oil',         quantity: '250ml bottle', category: 'pantry',  estimatedPrice: 220, currency: 'INR' },
+  { id: 'ing-refined-oil',  name: '🫙 Refined Oil',       quantity: '1L bottle',    category: 'pantry',  estimatedPrice: 130, currency: 'INR' },
+  { id: 'ing-dal',          name: '🫘 Toor Dal',          quantity: '500g pack',    category: 'pantry',  estimatedPrice: 70,  currency: 'INR' },
+  { id: 'ing-chickpeas',    name: '🫘 Chickpeas',         quantity: '500g pack',    category: 'pantry',  estimatedPrice: 65,  currency: 'INR' },
+  { id: 'ing-bread',        name: '🍞 Bread',             quantity: 'Pack of 10',   category: 'bakery',  estimatedPrice: 45,  currency: 'INR' },
+  // Spices
+  { id: 'ing-cumin',        name: '🌶 Cumin Powder',      quantity: '100g pack',    category: 'spices',  estimatedPrice: 45,  currency: 'INR' },
+  { id: 'ing-turmeric',     name: '🌿 Turmeric Powder',   quantity: '100g pack',    category: 'spices',  estimatedPrice: 35,  currency: 'INR' },
+  { id: 'ing-chilli',       name: '🌶 Red Chilli Powder', quantity: '100g pack',    category: 'spices',  estimatedPrice: 40,  currency: 'INR' },
+  { id: 'ing-garam-masala', name: '🌶 Garam Masala',      quantity: '100g pack',    category: 'spices',  estimatedPrice: 55,  currency: 'INR' },
+  { id: 'ing-paprika',      name: '🌶 Smoked Paprika',    quantity: '50g pack',     category: 'spices',  estimatedPrice: 60,  currency: 'INR' },
+  { id: 'ing-salt',         name: '🧂 Salt',              quantity: '1kg pack',     category: 'spices',  estimatedPrice: 20,  currency: 'INR' },
 ];
 
-export const SAMPLE_RECIPE: Recipe = {
-  id: 'rec-shakshuka-1',
-  title: 'Rustic Mediterranean Shakshuka',
-  description: 'Gently poached eggs in a simmering spiced tomato sauce with garlic, bell peppers, and olive oil.',
-  cookTimeMinutes: 20,
-  difficulty: 'Easy',
-  servings: 2,
-  calories: 340,
-  imageUrl: 'https://images.unsplash.com/photo-1590412200988-a436970781fa?w=500&auto=format&fit=crop&q=60',
-  ingredients: [
-    { id: 'ing-eggs', name: 'Eggs', quantity: '3 large', category: 'dairy', estimatedPrice: convertUsdToInr(1.2), currency: 'INR' },
-    { id: 'ing-tomato', name: 'Crushed Heirloom Tomatoes', quantity: '400g can', category: 'produce', estimatedPrice: convertUsdToInr(2.49), currency: 'INR' },
-    { id: 'ing-olive-oil', name: 'Olive Oil', quantity: '2 tbsp', category: 'pantry', estimatedPrice: convertUsdToInr(0.8), currency: 'INR' },
-    // Missing ingredients needed from store
-    { id: 'ing-bell-pepper', name: 'Red Bell Pepper', quantity: '1 sliced', category: 'produce', estimatedPrice: convertUsdToInr(1.89), currency: 'INR' },
-    { id: 'ing-feta', name: 'Crumbled Greek Feta', quantity: '60g', category: 'dairy', estimatedPrice: convertUsdToInr(3.25), currency: 'INR' },
-  ],
-  steps: [
-    { stepNumber: 1, instruction: 'Heat olive oil in a skillet over medium heat. Sauté sliced bell peppers and garlic until soft.' },
-    { stepNumber: 2, instruction: 'Pour in crushed tomatoes, season with cumin, paprika, salt, and simmer for 10 minutes.' },
-    { stepNumber: 3, instruction: 'Create small wells in sauce and crack eggs into them. Cover and cook for 5-7 minutes until whites are set.' },
-    { stepNumber: 4, instruction: 'Top with crumbled feta and fresh herbs. Serve hot with crusty sourdough bread.' },
-  ],
-};
+export function dishToRecipe(dish: Dish): Recipe {
+  return {
+    id: `rec-${dish.id}`,
+    title: dish.name,
+    description: dish.description,
+    cookTimeMinutes: dish.prepTimeMinutes,
+    difficulty: dish.prepTimeMinutes <= 10 ? 'Easy' : dish.prepTimeMinutes <= 20 ? 'Medium' : 'Hard',
+    servings: 2,
+    calories: dish.calories,
+    imageUrl: dish.imageUrl,
+    ingredients: dish.ingredients ?? [],
+    steps: dish.steps ?? [],
+  };
+}
+
+export const RECIPES: Recipe[] = INDIAN_FOOD_ITEMS
+  .filter((d) => d.ingredients?.length && d.steps?.length)
+  .map(dishToRecipe);
