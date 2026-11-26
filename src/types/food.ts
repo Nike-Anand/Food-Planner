@@ -1,4 +1,5 @@
 import type { Currency, Ingredient } from './shared';
+import type { CookingStep } from './recipe';
 
 export type FoodCategory =
   | 'All'
@@ -23,6 +24,7 @@ export interface Dish {
   isVegetarian: boolean;
   tags?: string[];
   ingredients?: Ingredient[];
+  steps?: CookingStep[];
 }
 
 export interface Restaurant {

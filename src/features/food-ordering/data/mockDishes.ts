@@ -25,9 +25,19 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: false,
     tags: ['Bestseller', 'Spicy'],
     ingredients: [
-      { id: 'ing-rice', name: 'Basmati Rice', quantity: '250g', category: 'pantry', estimatedPrice: 40, currency: 'INR' },
-      { id: 'ing-spices', name: 'Biryani Whole Spices', quantity: '20g', category: 'spices', estimatedPrice: 25, currency: 'INR' },
-      { id: 'ing-onion', name: 'Onion', quantity: '2 pcs', category: 'produce', estimatedPrice: 15, currency: 'INR' },
+      { id: 'ing-rice', name: 'Basmati Rice', quantity: '1kg pack', category: 'pantry', estimatedPrice: 90, currency: 'INR' },
+      { id: 'ing-garam-masala', name: 'Biryani Masala', quantity: '100g pack', category: 'spices', estimatedPrice: 55, currency: 'INR' },
+      { id: 'ing-onion', name: 'Onion', quantity: '500g pack', category: 'produce', estimatedPrice: 25, currency: 'INR' },
+      { id: 'ing-curd', name: 'Curd / Yogurt', quantity: '400g pack', category: 'dairy', estimatedPrice: 45, currency: 'INR' },
+      { id: 'ing-refined-oil', name: 'Refined Oil', quantity: '1L bottle', category: 'pantry', estimatedPrice: 130, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Wash and soak basmati rice for 30 minutes. Drain and set aside.', durationMinutes: 30 },
+      { stepNumber: 2, instruction: 'Slice onions and fry in oil until golden brown. Remove half for garnish.', durationMinutes: 10, tip: 'Fry on medium heat — patience gives you crispy onions, not burnt ones.' },
+      { stepNumber: 3, instruction: 'Add curd, biryani masala, salt to the remaining onions. Mix well to form the marinade base.', durationMinutes: 5 },
+      { stepNumber: 4, instruction: 'Par-boil the soaked rice until 70% cooked. Drain immediately.', durationMinutes: 8, tip: 'The rice should still have a bite — it finishes cooking in the dum.' },
+      { stepNumber: 5, instruction: 'Layer the masala base and rice alternately in a heavy pot. Top with fried onions and saffron water.', durationMinutes: 5 },
+      { stepNumber: 6, instruction: 'Seal the pot with foil or dough and cook on low flame (dum) for 20 minutes. Rest 5 minutes before opening.', durationMinutes: 25, tip: 'Do not open the lid during dum — the steam is what makes it fragrant.' },
     ],
   },
   {
@@ -44,9 +54,16 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Crispy'],
     ingredients: [
-      { id: 'ing-bun', name: 'Burger Buns', quantity: '2 pcs', category: 'bakery', estimatedPrice: 30, currency: 'INR' },
-      { id: 'ing-patty', name: 'Veggie Patty', quantity: '1 pc', category: 'pantry', estimatedPrice: 40, currency: 'INR' },
-      { id: 'ing-cheese', name: 'Cheese Slice', quantity: '1 pc', category: 'dairy', estimatedPrice: 15, currency: 'INR' },
+      { id: 'ing-bread', name: 'Burger Buns', quantity: 'Pack of 10', category: 'bakery', estimatedPrice: 45, currency: 'INR' },
+      { id: 'ing-potato', name: 'Potato', quantity: '1kg pack', category: 'produce', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-paneer', name: 'Paneer', quantity: '200g pack', category: 'dairy', estimatedPrice: 90, currency: 'INR' },
+      { id: 'ing-garam-masala', name: 'Garam Masala', quantity: '100g pack', category: 'spices', estimatedPrice: 55, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Boil and mash potatoes. Mix with garam masala, salt, and herbs. Shape into round patties.', durationMinutes: 15 },
+      { stepNumber: 2, instruction: 'Coat patties in besan batter and shallow fry until golden and crispy on both sides.', durationMinutes: 10, tip: 'Press gently while frying for an even crust.' },
+      { stepNumber: 3, instruction: 'Toast the buns on a pan with butter until lightly golden.', durationMinutes: 3 },
+      { stepNumber: 4, instruction: 'Assemble: spread sauce on bun, add lettuce, patty, cheese slice, and top bun. Serve hot.', durationMinutes: 2 },
     ],
   },
   {
@@ -63,9 +80,15 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Hot', 'Refreshing'],
     ingredients: [
-      { id: 'ing-tea', name: 'Tea Leaves', quantity: '10g', category: 'pantry', estimatedPrice: 10, currency: 'INR' },
-      { id: 'ing-ginger', name: 'Fresh Ginger', quantity: '10g', category: 'produce', estimatedPrice: 5, currency: 'INR' },
-      { id: 'ing-milk', name: 'Full Cream Milk', quantity: '150ml', category: 'dairy', estimatedPrice: 15, currency: 'INR' },
+      { id: 'ing-milk', name: 'Milk', quantity: '500ml pack', category: 'dairy', estimatedPrice: 30, currency: 'INR' },
+      { id: 'ing-ginger', name: 'Ginger', quantity: '100g pack', category: 'produce', estimatedPrice: 20, currency: 'INR' },
+      { id: 'ing-salt', name: 'Tea Leaves', quantity: '100g pack', category: 'spices', estimatedPrice: 40, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Crush ginger and cardamom pods coarsely using a mortar and pestle.', durationMinutes: 2 },
+      { stepNumber: 2, instruction: 'Boil water with crushed ginger and cardamom for 2 minutes.', durationMinutes: 3 },
+      { stepNumber: 3, instruction: 'Add tea leaves and boil for 1 more minute until the water turns deep brown.', durationMinutes: 2, tip: 'Do not over-boil or the tea turns bitter.' },
+      { stepNumber: 4, instruction: 'Add milk and bring to a boil. Simmer for 2 minutes, strain and serve hot.', durationMinutes: 3 },
     ],
   },
   {
@@ -81,8 +104,14 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     imageUrl: '/images/foods/chapati.jpg',
     isVegetarian: true,
     ingredients: [
-      { id: 'ing-atta', name: 'Whole Wheat Atta', quantity: '150g', category: 'pantry', estimatedPrice: 15, currency: 'INR' },
-      { id: 'ing-ghee', name: 'Desi Ghee', quantity: '1 tbsp', category: 'dairy', estimatedPrice: 15, currency: 'INR' },
+      { id: 'ing-dal', name: 'Toor Dal', quantity: '500g pack', category: 'pantry', estimatedPrice: 70, currency: 'INR' },
+      { id: 'ing-butter', name: 'Butter', quantity: '100g pack', category: 'dairy', estimatedPrice: 55, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Mix whole wheat atta with salt and water. Knead into a soft smooth dough. Rest for 15 minutes.', durationMinutes: 20, tip: 'Soft dough = soft chapati. Do not make it stiff.' },
+      { stepNumber: 2, instruction: 'Divide dough into equal balls. Roll each into a thin round disc using a rolling pin.', durationMinutes: 5 },
+      { stepNumber: 3, instruction: 'Cook on a hot tawa for 30 seconds each side until brown spots appear.', durationMinutes: 5 },
+      { stepNumber: 4, instruction: 'Place directly on flame for 5 seconds to puff up. Apply ghee and serve immediately.', durationMinutes: 2 },
     ],
   },
   {
@@ -99,9 +128,17 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['North Indian Classic'],
     ingredients: [
-      { id: 'ing-chickpeas', name: 'Kabuli Chana', quantity: '200g', category: 'pantry', estimatedPrice: 35, currency: 'INR' },
-      { id: 'ing-maida', name: 'Maida', quantity: '150g', category: 'pantry', estimatedPrice: 20, currency: 'INR' },
-      { id: 'ing-chole-masala', name: 'Chole Masala', quantity: '15g', category: 'spices', estimatedPrice: 15, currency: 'INR' },
+      { id: 'ing-chickpeas', name: 'Chickpeas', quantity: '500g pack', category: 'pantry', estimatedPrice: 65, currency: 'INR' },
+      { id: 'ing-onion', name: 'Onion', quantity: '500g pack', category: 'produce', estimatedPrice: 25, currency: 'INR' },
+      { id: 'ing-tomato', name: 'Tomatoes', quantity: '500g pack', category: 'produce', estimatedPrice: 30, currency: 'INR' },
+      { id: 'ing-garam-masala', name: 'Garam Masala', quantity: '100g pack', category: 'spices', estimatedPrice: 55, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Soak chickpeas overnight. Pressure cook with salt and a tea bag for 4-5 whistles until soft.', durationMinutes: 30, tip: 'The tea bag gives chole its dark colour naturally.' },
+      { stepNumber: 2, instruction: 'Sauté onions until golden. Add ginger-garlic paste and cook for 2 minutes.', durationMinutes: 8 },
+      { stepNumber: 3, instruction: 'Add tomatoes and chole masala. Cook until oil separates from the masala.', durationMinutes: 10 },
+      { stepNumber: 4, instruction: 'Add cooked chickpeas with some water. Simmer for 10 minutes. Garnish with coriander.', durationMinutes: 10 },
+      { stepNumber: 5, instruction: 'For bhature: knead maida with curd and rest 2 hours. Roll and deep fry until puffed and golden.', durationMinutes: 15, tip: 'Fry on medium-high heat so bhature puff up immediately.' },
     ],
   },
   {
@@ -118,9 +155,15 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Gujarati Street Food'],
     ingredients: [
-      { id: 'ing-pav', name: 'Ladi Pav', quantity: '2 pcs', category: 'bakery', estimatedPrice: 15, currency: 'INR' },
-      { id: 'ing-peanuts', name: 'Masala Peanuts', quantity: '30g', category: 'pantry', estimatedPrice: 15, currency: 'INR' },
-      { id: 'ing-sev', name: 'Nylon Sev', quantity: '20g', category: 'pantry', estimatedPrice: 10, currency: 'INR' },
+      { id: 'ing-bread', name: 'Bread', quantity: 'Pack of 10', category: 'bakery', estimatedPrice: 45, currency: 'INR' },
+      { id: 'ing-potato', name: 'Potato', quantity: '1kg pack', category: 'produce', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-garam-masala', name: 'Garam Masala', quantity: '100g pack', category: 'spices', estimatedPrice: 55, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Boil and mash potatoes. Mix with dabeli masala, tamarind chutney, and salt.', durationMinutes: 15 },
+      { stepNumber: 2, instruction: 'Slit the pav and spread green chutney on one side, tamarind chutney on the other.', durationMinutes: 2 },
+      { stepNumber: 3, instruction: 'Stuff the potato mixture generously into the pav.', durationMinutes: 3 },
+      { stepNumber: 4, instruction: 'Top with masala peanuts, pomegranate seeds, sev, and chopped coriander. Serve immediately.', durationMinutes: 2, tip: 'Toast the pav lightly on a tawa with butter for extra flavour.' },
     ],
   },
   {
@@ -136,8 +179,17 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     imageUrl: '/images/foods/dal.jpg',
     isVegetarian: true,
     ingredients: [
-      { id: 'ing-toor-dal', name: 'Toor Dal', quantity: '150g', category: 'pantry', estimatedPrice: 25, currency: 'INR' },
-      { id: 'ing-garlic', name: 'Garlic & Cumin', quantity: '15g', category: 'produce', estimatedPrice: 10, currency: 'INR' },
+      { id: 'ing-dal', name: 'Toor Dal', quantity: '500g pack', category: 'pantry', estimatedPrice: 70, currency: 'INR' },
+      { id: 'ing-garlic', name: 'Garlic', quantity: '100g pack', category: 'produce', estimatedPrice: 25, currency: 'INR' },
+      { id: 'ing-tomato', name: 'Tomatoes', quantity: '500g pack', category: 'produce', estimatedPrice: 30, currency: 'INR' },
+      { id: 'ing-turmeric', name: 'Turmeric Powder', quantity: '100g pack', category: 'spices', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-butter', name: 'Butter', quantity: '100g pack', category: 'dairy', estimatedPrice: 55, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Wash toor dal and pressure cook with turmeric and salt for 3 whistles until soft.', durationMinutes: 20 },
+      { stepNumber: 2, instruction: 'Mash the cooked dal lightly and add water to adjust consistency. Keep on low heat.', durationMinutes: 5 },
+      { stepNumber: 3, instruction: 'Heat ghee in a small pan. Add cumin seeds, dried red chillies, and garlic. Let them splutter.', durationMinutes: 3, tip: 'The tadka should be very hot when poured — you should hear a loud sizzle.' },
+      { stepNumber: 4, instruction: 'Pour the hot tadka over the dal. Add lemon juice and garnish with coriander. Serve hot.', durationMinutes: 2 },
     ],
   },
   {
@@ -154,8 +206,15 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Healthy Choice'],
     ingredients: [
-      { id: 'ing-besan', name: 'Besan (Gram Flour)', quantity: '150g', category: 'pantry', estimatedPrice: 20, currency: 'INR' },
-      { id: 'ing-mustard', name: 'Mustard Seeds & Curry Leaves', quantity: '10g', category: 'spices', estimatedPrice: 5, currency: 'INR' },
+      { id: 'ing-chickpeas', name: 'Chickpeas', quantity: '500g pack', category: 'pantry', estimatedPrice: 65, currency: 'INR' },
+      { id: 'ing-cumin', name: 'Cumin Powder', quantity: '100g pack', category: 'spices', estimatedPrice: 45, currency: 'INR' },
+      { id: 'ing-lemon', name: 'Lemon', quantity: 'Pack of 4', category: 'produce', estimatedPrice: 20, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Mix besan with curd, water, turmeric, salt, and eno. Whisk until smooth with no lumps.', durationMinutes: 5, tip: 'Add eno just before steaming — not earlier or it loses its rise.' },
+      { stepNumber: 2, instruction: 'Pour batter into a greased plate and steam for 15 minutes until a toothpick comes out clean.', durationMinutes: 15 },
+      { stepNumber: 3, instruction: 'Cool slightly and cut into squares.', durationMinutes: 5 },
+      { stepNumber: 4, instruction: 'Heat oil, add mustard seeds, curry leaves, green chillies. Pour over dhokla. Garnish with coconut and coriander.', durationMinutes: 3 },
     ],
   },
   {
@@ -172,9 +231,16 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Crispy South Special'],
     ingredients: [
-      { id: 'ing-dosa-batter', name: 'Dosa Batter', quantity: '250ml', category: 'pantry', estimatedPrice: 30, currency: 'INR' },
-      { id: 'ing-potato', name: 'Potatoes', quantity: '2 pcs', category: 'produce', estimatedPrice: 10, currency: 'INR' },
-      { id: 'ing-butter', name: 'Butter', quantity: '20g', category: 'dairy', estimatedPrice: 15, currency: 'INR' },
+      { id: 'ing-potato', name: 'Potato', quantity: '1kg pack', category: 'produce', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-butter', name: 'Butter', quantity: '100g pack', category: 'dairy', estimatedPrice: 55, currency: 'INR' },
+      { id: 'ing-turmeric', name: 'Turmeric Powder', quantity: '100g pack', category: 'spices', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-onion', name: 'Onion', quantity: '500g pack', category: 'produce', estimatedPrice: 25, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Boil potatoes, peel and mash. Sauté onions, mustard seeds, curry leaves, turmeric. Mix with potatoes for masala filling.', durationMinutes: 15 },
+      { stepNumber: 2, instruction: 'Heat a flat tawa on high. Pour a ladle of dosa batter and spread in a circular motion to a thin crepe.', durationMinutes: 3, tip: 'The tawa must be very hot and lightly oiled for a crispy dosa.' },
+      { stepNumber: 3, instruction: 'Add butter on the edges. Cook until the bottom is golden and crispy.', durationMinutes: 3 },
+      { stepNumber: 4, instruction: 'Place masala filling in the centre, fold the dosa and serve with coconut chutney and sambar.', durationMinutes: 2 },
     ],
   },
   {
@@ -190,9 +256,16 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     imageUrl: '/images/foods/fried_rice.jpg',
     isVegetarian: true,
     ingredients: [
-      { id: 'ing-rice', name: 'Rice', quantity: '200g', category: 'pantry', estimatedPrice: 30, currency: 'INR' },
-      { id: 'ing-veggies', name: 'Mixed Stir-fry Veggies', quantity: '100g', category: 'produce', estimatedPrice: 25, currency: 'INR' },
-      { id: 'ing-soy', name: 'Soy & Chilli Sauces', quantity: '2 tbsp', category: 'pantry', estimatedPrice: 15, currency: 'INR' },
+      { id: 'ing-rice', name: 'Basmati Rice', quantity: '1kg pack', category: 'pantry', estimatedPrice: 90, currency: 'INR' },
+      { id: 'ing-onion', name: 'Onion', quantity: '500g pack', category: 'produce', estimatedPrice: 25, currency: 'INR' },
+      { id: 'ing-garlic', name: 'Garlic', quantity: '100g pack', category: 'produce', estimatedPrice: 25, currency: 'INR' },
+      { id: 'ing-refined-oil', name: 'Refined Oil', quantity: '1L bottle', category: 'pantry', estimatedPrice: 130, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Cook rice until just done. Spread on a plate and cool completely — cold rice fries better.', durationMinutes: 20, tip: 'Day-old rice works best for fried rice.' },
+      { stepNumber: 2, instruction: 'Heat oil in a wok on high flame. Add garlic and stir-fry for 30 seconds.', durationMinutes: 2 },
+      { stepNumber: 3, instruction: 'Add mixed vegetables and stir-fry on high heat for 3 minutes keeping them crunchy.', durationMinutes: 3 },
+      { stepNumber: 4, instruction: 'Add cold rice, soy sauce, chilli sauce, salt and pepper. Toss everything on high flame for 3 minutes.', durationMinutes: 3, tip: 'High flame is key — it gives the smoky wok flavour.' },
     ],
   },
   {
@@ -209,8 +282,15 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Low Calorie'],
     ingredients: [
-      { id: 'ing-idli-batter', name: 'Idli Batter', quantity: '250ml', category: 'pantry', estimatedPrice: 25, currency: 'INR' },
-      { id: 'ing-dal', name: 'Toor Dal for Sambar', quantity: '50g', category: 'pantry', estimatedPrice: 15, currency: 'INR' },
+      { id: 'ing-dal', name: 'Toor Dal', quantity: '500g pack', category: 'pantry', estimatedPrice: 70, currency: 'INR' },
+      { id: 'ing-tomato', name: 'Tomatoes', quantity: '500g pack', category: 'produce', estimatedPrice: 30, currency: 'INR' },
+      { id: 'ing-turmeric', name: 'Turmeric Powder', quantity: '100g pack', category: 'spices', estimatedPrice: 35, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Ferment idli batter overnight or use store-bought. Grease idli moulds with oil.', durationMinutes: 5, tip: 'Batter should be thick and airy — not runny.' },
+      { stepNumber: 2, instruction: 'Pour batter into moulds and steam for 10-12 minutes until a toothpick comes out clean.', durationMinutes: 12 },
+      { stepNumber: 3, instruction: 'For sambar: pressure cook toor dal with tomatoes and turmeric. Add sambar powder and tamarind water. Simmer 10 minutes.', durationMinutes: 20 },
+      { stepNumber: 4, instruction: 'Temper sambar with mustard seeds, curry leaves, and dried red chilli in oil. Serve idli with sambar and chutney.', durationMinutes: 3 },
     ],
   },
   {
@@ -227,8 +307,14 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Sweet Tooth'],
     ingredients: [
-      { id: 'ing-sugar', name: 'Sugar', quantity: '150g', category: 'pantry', estimatedPrice: 15, currency: 'INR' },
-      { id: 'ing-saffron', name: 'Kesar & Cardamom', quantity: '1g', category: 'spices', estimatedPrice: 30, currency: 'INR' },
+      { id: 'ing-milk', name: 'Milk', quantity: '500ml pack', category: 'dairy', estimatedPrice: 30, currency: 'INR' },
+      { id: 'ing-salt', name: 'Salt', quantity: '1kg pack', category: 'spices', estimatedPrice: 20, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Mix maida, besan, curd, and water into a smooth flowing batter. Rest for 30 minutes to ferment slightly.', durationMinutes: 35 },
+      { stepNumber: 2, instruction: 'Make sugar syrup with sugar, water, saffron, and cardamom. Cook to one-string consistency.', durationMinutes: 10, tip: 'Keep syrup warm throughout — cold syrup makes jalebis soggy.' },
+      { stepNumber: 3, instruction: 'Fill batter in a squeeze bottle. Pipe spiral shapes into hot oil and fry until crispy and golden.', durationMinutes: 10 },
+      { stepNumber: 4, instruction: 'Immediately dip fried jalebis in warm sugar syrup for 30 seconds. Serve hot with rabdi.', durationMinutes: 3 },
     ],
   },
   {
@@ -245,8 +331,16 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Kolkata Roll'],
     ingredients: [
-      { id: 'ing-paratha', name: 'Paratha', quantity: '1 pc', category: 'bakery', estimatedPrice: 20, currency: 'INR' },
-      { id: 'ing-paneer', name: 'Paneer', quantity: '80g', category: 'dairy', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-paneer', name: 'Paneer', quantity: '200g pack', category: 'dairy', estimatedPrice: 90, currency: 'INR' },
+      { id: 'ing-curd', name: 'Curd / Yogurt', quantity: '400g pack', category: 'dairy', estimatedPrice: 45, currency: 'INR' },
+      { id: 'ing-bell-pepper', name: 'Bell Pepper', quantity: '2 pcs (250g)', category: 'produce', estimatedPrice: 55, currency: 'INR' },
+      { id: 'ing-garam-masala', name: 'Garam Masala', quantity: '100g pack', category: 'spices', estimatedPrice: 55, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Marinate paneer cubes in curd, garam masala, chilli powder, and lemon juice for 30 minutes.', durationMinutes: 30 },
+      { stepNumber: 2, instruction: 'Grill or pan-fry marinated paneer and capsicum on high heat until charred spots appear.', durationMinutes: 8, tip: 'High heat gives the tandoori char — do not stir too often.' },
+      { stepNumber: 3, instruction: 'Cook paratha on a tawa with oil until golden on both sides.', durationMinutes: 5 },
+      { stepNumber: 4, instruction: 'Spread mint chutney on paratha, add paneer filling and pickled onions. Roll tightly and serve.', durationMinutes: 3 },
     ],
   },
   {
@@ -263,8 +357,16 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Chef Recommendation'],
     ingredients: [
-      { id: 'ing-cashews', name: 'Cashews & Cream', quantity: '60g', category: 'dairy', estimatedPrice: 45, currency: 'INR' },
-      { id: 'ing-paneer', name: 'Fresh Paneer', quantity: '100g', category: 'dairy', estimatedPrice: 40, currency: 'INR' },
+      { id: 'ing-paneer', name: 'Paneer', quantity: '200g pack', category: 'dairy', estimatedPrice: 90, currency: 'INR' },
+      { id: 'ing-potato', name: 'Potato', quantity: '1kg pack', category: 'produce', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-cream', name: 'Fresh Cream', quantity: '200ml pack', category: 'dairy', estimatedPrice: 55, currency: 'INR' },
+      { id: 'ing-tomato', name: 'Tomatoes', quantity: '500g pack', category: 'produce', estimatedPrice: 30, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Mash paneer and potato together. Add salt and cardamom. Shape into smooth balls and deep fry until golden.', durationMinutes: 15 },
+      { stepNumber: 2, instruction: 'Blend tomatoes, onions, cashews, and cream into a smooth paste.', durationMinutes: 5 },
+      { stepNumber: 3, instruction: 'Cook the paste in butter with spices until oil separates. Add water for gravy consistency.', durationMinutes: 12, tip: 'Low and slow cooking deepens the gravy flavour.' },
+      { stepNumber: 4, instruction: 'Gently add kofta balls to the gravy just before serving so they stay soft.', durationMinutes: 3 },
     ],
   },
   {
@@ -281,8 +383,14 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Chilled Dessert'],
     ingredients: [
-      { id: 'ing-milk', name: 'Condensed Milk', quantity: '100ml', category: 'dairy', estimatedPrice: 30, currency: 'INR' },
-      { id: 'ing-nuts', name: 'Pistachios & Almonds', quantity: '20g', category: 'pantry', estimatedPrice: 25, currency: 'INR' },
+      { id: 'ing-milk', name: 'Milk', quantity: '500ml pack', category: 'dairy', estimatedPrice: 30, currency: 'INR' },
+      { id: 'ing-cream', name: 'Fresh Cream', quantity: '200ml pack', category: 'dairy', estimatedPrice: 55, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Boil full-fat milk on medium heat, stirring continuously until it reduces to half.', durationMinutes: 25, tip: 'Keep stirring to prevent the milk from sticking to the bottom.' },
+      { stepNumber: 2, instruction: 'Add sugar, cardamom, saffron, and crushed pistachios. Mix well and cook 5 more minutes.', durationMinutes: 5 },
+      { stepNumber: 3, instruction: 'Pour into kulfi moulds or small cups. Cover tightly with foil.', durationMinutes: 3 },
+      { stepNumber: 4, instruction: 'Freeze for at least 6 hours or overnight. Unmould and serve garnished with rose water.', durationMinutes: 360 },
     ],
   },
   {
@@ -299,9 +407,15 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Street Favorite'],
     ingredients: [
-      { id: 'ing-flour', name: 'Refined Flour', quantity: '100g', category: 'pantry', estimatedPrice: 15, currency: 'INR' },
-      { id: 'ing-cabbage', name: 'Cabbage & Veggies', quantity: '100g', category: 'produce', estimatedPrice: 20, currency: 'INR' },
-      { id: 'ing-dip', name: 'Fiery Dip Chillies', quantity: '20g', category: 'produce', estimatedPrice: 10, currency: 'INR' },
+      { id: 'ing-spinach', name: 'Spinach', quantity: '250g bunch', category: 'produce', estimatedPrice: 30, currency: 'INR' },
+      { id: 'ing-onion', name: 'Onion', quantity: '500g pack', category: 'produce', estimatedPrice: 25, currency: 'INR' },
+      { id: 'ing-garlic', name: 'Garlic', quantity: '100g pack', category: 'produce', estimatedPrice: 25, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Mix maida with water and knead into a stiff dough. Rest for 20 minutes. Roll thin and cut into circles.', durationMinutes: 25 },
+      { stepNumber: 2, instruction: 'Finely chop cabbage, onion, garlic, and ginger. Mix with soy sauce, pepper, and salt for filling.', durationMinutes: 8 },
+      { stepNumber: 3, instruction: 'Place filling in centre of each circle. Pleat and seal the edges tightly.', durationMinutes: 10, tip: 'Seal edges well or they will open during steaming.' },
+      { stepNumber: 4, instruction: 'Steam momos for 10-12 minutes until the skin turns translucent. Serve with fiery red chilli dip.', durationMinutes: 12 },
     ],
   },
   {
@@ -317,8 +431,15 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     imageUrl: '/images/foods/naan.jpg',
     isVegetarian: true,
     ingredients: [
-      { id: 'ing-maida', name: 'Maida & Yeast', quantity: '100g', category: 'pantry', estimatedPrice: 15, currency: 'INR' },
-      { id: 'ing-garlic-butter', name: 'Garlic Butter', quantity: '20g', category: 'dairy', estimatedPrice: 20, currency: 'INR' },
+      { id: 'ing-butter', name: 'Butter', quantity: '100g pack', category: 'dairy', estimatedPrice: 55, currency: 'INR' },
+      { id: 'ing-garlic', name: 'Garlic', quantity: '100g pack', category: 'produce', estimatedPrice: 25, currency: 'INR' },
+      { id: 'ing-curd', name: 'Curd / Yogurt', quantity: '400g pack', category: 'dairy', estimatedPrice: 45, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Mix maida, yeast, curd, sugar, and salt. Knead into a soft dough. Rest for 1 hour until doubled.', durationMinutes: 65, tip: 'Warm environment helps the dough rise faster.' },
+      { stepNumber: 2, instruction: 'Divide dough into balls. Roll into oval shapes, slightly thick.', durationMinutes: 5 },
+      { stepNumber: 3, instruction: 'Cook on a very hot tawa or under a grill until bubbles form and brown spots appear.', durationMinutes: 5 },
+      { stepNumber: 4, instruction: 'Brush immediately with garlic butter and fresh coriander. Serve hot.', durationMinutes: 1 },
     ],
   },
   {
@@ -335,8 +456,15 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Rainy Day Special'],
     ingredients: [
-      { id: 'ing-onions', name: 'Onions', quantity: '2 pcs', category: 'produce', estimatedPrice: 10, currency: 'INR' },
-      { id: 'ing-besan', name: 'Besan', quantity: '100g', category: 'pantry', estimatedPrice: 15, currency: 'INR' },
+      { id: 'ing-onion', name: 'Onion', quantity: '500g pack', category: 'produce', estimatedPrice: 25, currency: 'INR' },
+      { id: 'ing-chilli', name: 'Red Chilli Powder', quantity: '100g pack', category: 'spices', estimatedPrice: 40, currency: 'INR' },
+      { id: 'ing-refined-oil', name: 'Refined Oil', quantity: '1L bottle', category: 'pantry', estimatedPrice: 130, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Mix besan with ajwain, chilli powder, turmeric, salt, and water into a thick batter.', durationMinutes: 5 },
+      { stepNumber: 2, instruction: 'Slice onions into rings. Dip each ring in the batter coating well.', durationMinutes: 3 },
+      { stepNumber: 3, instruction: 'Heat oil to 180°C. Fry pakoras in batches until golden and crispy. Do not overcrowd.', durationMinutes: 12, tip: 'Fry twice for extra crunch — once to cook, once to crisp.' },
+      { stepNumber: 4, instruction: 'Drain on paper towels. Serve hot with green chutney and masala chai.', durationMinutes: 2 },
     ],
   },
   {
@@ -353,8 +481,17 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Bestseller'],
     ingredients: [
-      { id: 'ing-paneer', name: 'Paneer Cubes', quantity: '200g', category: 'dairy', estimatedPrice: 60, currency: 'INR' },
-      { id: 'ing-tomatoes', name: 'Tomatoes & Cashews', quantity: '150g', category: 'produce', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-paneer', name: 'Paneer', quantity: '200g pack', category: 'dairy', estimatedPrice: 90, currency: 'INR' },
+      { id: 'ing-tomato', name: 'Tomatoes', quantity: '500g pack', category: 'produce', estimatedPrice: 30, currency: 'INR' },
+      { id: 'ing-cream', name: 'Fresh Cream', quantity: '200ml pack', category: 'dairy', estimatedPrice: 55, currency: 'INR' },
+      { id: 'ing-butter', name: 'Butter', quantity: '100g pack', category: 'dairy', estimatedPrice: 55, currency: 'INR' },
+      { id: 'ing-garam-masala', name: 'Garam Masala', quantity: '100g pack', category: 'spices', estimatedPrice: 55, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Blend tomatoes, onions, cashews, and ginger-garlic into a smooth puree.', durationMinutes: 5 },
+      { stepNumber: 2, instruction: 'Cook the puree in butter until it darkens and oil separates. Add garam masala and kasuri methi.', durationMinutes: 12, tip: 'Kasuri methi added at the end is the secret to restaurant-style flavour.' },
+      { stepNumber: 3, instruction: 'Add water to adjust gravy consistency. Simmer for 5 minutes.', durationMinutes: 5 },
+      { stepNumber: 4, instruction: 'Add paneer cubes and fresh cream. Simmer 3 minutes. Do not boil after adding cream.', durationMinutes: 3 },
     ],
   },
   {
@@ -371,8 +508,15 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Crowd Favorite'],
     ingredients: [
-      { id: 'ing-puris', name: 'Puri Shells', quantity: '8 pcs', category: 'pantry', estimatedPrice: 20, currency: 'INR' },
-      { id: 'ing-mint', name: 'Pudina Mint Water Mix', quantity: '200ml', category: 'produce', estimatedPrice: 15, currency: 'INR' },
+      { id: 'ing-potato', name: 'Potato', quantity: '1kg pack', category: 'produce', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-chickpeas', name: 'Chickpeas', quantity: '500g pack', category: 'pantry', estimatedPrice: 65, currency: 'INR' },
+      { id: 'ing-coriander', name: 'Coriander', quantity: '50g bunch', category: 'produce', estimatedPrice: 15, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Boil and mash potatoes with boiled chickpeas, salt, chaat masala, and coriander for the filling.', durationMinutes: 20 },
+      { stepNumber: 2, instruction: 'Blend mint, coriander, green chilli, lemon juice, and water into spicy pani. Chill in fridge.', durationMinutes: 5, tip: 'The pani should be very cold for the best experience.' },
+      { stepNumber: 3, instruction: 'Make tamarind-date chutney by boiling tamarind pulp with jaggery and spices until thick.', durationMinutes: 10 },
+      { stepNumber: 4, instruction: 'Crack a small hole in each puri, fill with potato mixture, add a drop of chutney, and dip in pani. Eat immediately.', durationMinutes: 5 },
     ],
   },
   {
@@ -389,9 +533,17 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Mumbai Street Special'],
     ingredients: [
-      { id: 'ing-potatoes', name: 'Potatoes & Cauliflower', quantity: '200g', category: 'produce', estimatedPrice: 25, currency: 'INR' },
-      { id: 'ing-pav', name: 'Butter Pav', quantity: '2 pcs', category: 'bakery', estimatedPrice: 20, currency: 'INR' },
-      { id: 'ing-bhaji-masala', name: 'Pav Bhaji Masala', quantity: '15g', category: 'spices', estimatedPrice: 15, currency: 'INR' },
+      { id: 'ing-potato', name: 'Potato', quantity: '1kg pack', category: 'produce', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-butter', name: 'Butter', quantity: '100g pack', category: 'dairy', estimatedPrice: 55, currency: 'INR' },
+      { id: 'ing-tomato', name: 'Tomatoes', quantity: '500g pack', category: 'produce', estimatedPrice: 30, currency: 'INR' },
+      { id: 'ing-garam-masala', name: 'Garam Masala', quantity: '100g pack', category: 'spices', estimatedPrice: 55, currency: 'INR' },
+      { id: 'ing-bread', name: 'Bread', quantity: 'Pack of 10', category: 'bakery', estimatedPrice: 45, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Boil potatoes, cauliflower, and peas until soft. Mash coarsely.', durationMinutes: 20 },
+      { stepNumber: 2, instruction: 'Cook onions and tomatoes in butter until soft. Add pav bhaji masala and cook 5 minutes.', durationMinutes: 10 },
+      { stepNumber: 3, instruction: 'Add mashed vegetables to the masala. Mix and mash together on the tawa. Add butter generously.', durationMinutes: 8, tip: 'Keep mashing and mixing on the tawa — this is what gives Mumbai bhaji its texture.' },
+      { stepNumber: 4, instruction: 'Toast pav with butter until golden. Serve bhaji topped with raw onion, lemon, and coriander.', durationMinutes: 3 },
     ],
   },
   {
@@ -407,9 +559,16 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     imageUrl: '/images/foods/pizza.jpg',
     isVegetarian: true,
     ingredients: [
-      { id: 'ing-pizza-base', name: 'Pizza Base', quantity: '1 pc', category: 'bakery', estimatedPrice: 35, currency: 'INR' },
-      { id: 'ing-mozzarella', name: 'Mozzarella Cheese', quantity: '100g', category: 'dairy', estimatedPrice: 55, currency: 'INR' },
-      { id: 'ing-paneer', name: 'Tandoori Paneer', quantity: '80g', category: 'dairy', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-paneer', name: 'Paneer', quantity: '200g pack', category: 'dairy', estimatedPrice: 90, currency: 'INR' },
+      { id: 'ing-bell-pepper', name: 'Bell Pepper', quantity: '2 pcs (250g)', category: 'produce', estimatedPrice: 55, currency: 'INR' },
+      { id: 'ing-tomato', name: 'Tomatoes', quantity: '500g pack', category: 'produce', estimatedPrice: 30, currency: 'INR' },
+      { id: 'ing-garam-masala', name: 'Garam Masala', quantity: '100g pack', category: 'spices', estimatedPrice: 55, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Spread makhani sauce on the pizza base evenly leaving a border.', durationMinutes: 3 },
+      { stepNumber: 2, instruction: 'Top with mozzarella, tandoori paneer cubes, sliced capsicum, and onion rings.', durationMinutes: 3 },
+      { stepNumber: 3, instruction: 'Bake in a preheated oven at 220°C for 12-15 minutes until cheese is bubbly and crust is golden.', durationMinutes: 15, tip: 'Preheat the oven well — a hot oven gives a crispy base.' },
+      { stepNumber: 4, instruction: 'Sprinkle chaat masala and chilli flakes on top. Slice and serve hot.', durationMinutes: 2 },
     ],
   },
   {
@@ -426,8 +585,15 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['All-Time Favorite'],
     ingredients: [
-      { id: 'ing-potato', name: 'Potatoes & Peas', quantity: '150g', category: 'produce', estimatedPrice: 15, currency: 'INR' },
-      { id: 'ing-flour', name: 'Maida & Ajwain', quantity: '100g', category: 'pantry', estimatedPrice: 15, currency: 'INR' },
+      { id: 'ing-potato', name: 'Potato', quantity: '1kg pack', category: 'produce', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-cumin', name: 'Cumin Powder', quantity: '100g pack', category: 'spices', estimatedPrice: 45, currency: 'INR' },
+      { id: 'ing-refined-oil', name: 'Refined Oil', quantity: '1L bottle', category: 'pantry', estimatedPrice: 130, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Make stiff dough with maida, ajwain, oil, and water. Rest 20 minutes.', durationMinutes: 25 },
+      { stepNumber: 2, instruction: 'Boil and mash potatoes with peas, cumin, coriander, garam masala, and amchur.', durationMinutes: 15 },
+      { stepNumber: 3, instruction: 'Roll dough into ovals, cut in half. Shape each half into a cone and fill with potato mixture. Seal edges with water.', durationMinutes: 15, tip: 'Seal firmly — any gap will cause the samosa to open in oil.' },
+      { stepNumber: 4, instruction: 'Deep fry on medium heat until golden and crispy. Serve with green chutney and tamarind chutney.', durationMinutes: 12 },
     ],
   },
   {
@@ -444,9 +610,17 @@ export const INDIAN_FOOD_ITEMS: Dish[] = [
     isVegetarian: true,
     tags: ['Street Icon'],
     ingredients: [
-      { id: 'ing-pav', name: 'Ladi Pav', quantity: '2 pcs', category: 'bakery', estimatedPrice: 15, currency: 'INR' },
-      { id: 'ing-vada', name: 'Potato Batata Mix', quantity: '150g', category: 'produce', estimatedPrice: 15, currency: 'INR' },
-      { id: 'ing-garlic-chutney', name: 'Dry Garlic Chutney', quantity: '15g', category: 'spices', estimatedPrice: 10, currency: 'INR' },
+      { id: 'ing-potato', name: 'Potato', quantity: '1kg pack', category: 'produce', estimatedPrice: 35, currency: 'INR' },
+      { id: 'ing-garlic', name: 'Garlic', quantity: '100g pack', category: 'produce', estimatedPrice: 25, currency: 'INR' },
+      { id: 'ing-bread', name: 'Bread', quantity: 'Pack of 10', category: 'bakery', estimatedPrice: 45, currency: 'INR' },
+      { id: 'ing-chilli', name: 'Red Chilli Powder', quantity: '100g pack', category: 'spices', estimatedPrice: 40, currency: 'INR' },
+      { id: 'ing-refined-oil', name: 'Refined Oil', quantity: '1L bottle', category: 'pantry', estimatedPrice: 130, currency: 'INR' },
+    ],
+    steps: [
+      { stepNumber: 1, instruction: 'Boil and mash potatoes. Mix with mustard seed tadka, turmeric, green chilli, and coriander.', durationMinutes: 20 },
+      { stepNumber: 2, instruction: 'Shape into round balls. Dip in besan batter and deep fry until golden and crispy.', durationMinutes: 10, tip: 'The besan coating should be thick enough to hold its shape.' },
+      { stepNumber: 3, instruction: 'Dry roast garlic, coconut, and dried red chillies. Grind into dry garlic chutney.', durationMinutes: 8 },
+      { stepNumber: 4, instruction: 'Slit pav, spread green chutney and dry garlic chutney. Place hot vada inside. Serve with fried green chilli.', durationMinutes: 3 },
     ],
   },
 ];
