@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cartStore';
@@ -20,14 +20,17 @@ const STATUS_SEQUENCE: ActiveOrder['status'][] = ['placed', 'preparing', 'on_the
 export default function OrderStatusPage() {
   const { orderId } = useParams<{ orderId: string }>();
   const router = useRouter();
-  const getOrderById = useCartStore((s) => s.getOrderById);
+  const hasHydrated = useCartStore((s) => s.hasHydrated);
+  const order = useCartStore(
+    (s) =>
+      s.orders.find((storedOrder) => storedOrder.orderId === orderId) ??
+      (s.activeOrder?.orderId === orderId ? s.activeOrder : undefined)
+  );
   const updateOrderStatus = useCartStore((s) => s.updateOrderStatus);
-
-  const [order, setOrder] = useState<ActiveOrder | undefined>(() => getOrderById(orderId));
 
   // Simulate order progression
   useEffect(() => {
-    if (!order || order.status === 'delivered') return;
+    if (!hasHydrated || !order || order.status === 'delivered') return;
 
     const currentIdx = STATUS_SEQUENCE.indexOf(order.status);
     if (currentIdx === STATUS_SEQUENCE.length - 1) return;
@@ -35,16 +38,18 @@ export default function OrderStatusPage() {
     const timer = setTimeout(() => {
       const nextStatus = STATUS_SEQUENCE[currentIdx + 1];
       updateOrderStatus(orderId, nextStatus);
-      setOrder(getOrderById(orderId));
     }, 8000);
 
     return () => clearTimeout(timer);
-  }, [order?.status, orderId, updateOrderStatus, getOrderById]);
+  }, [hasHydrated, order, orderId, updateOrderStatus]);
 
-  // Sync from store on status change
-  useEffect(() => {
-    setOrder(getOrderById(orderId));
-  }, [orderId, getOrderById]);
+  if (!hasHydrated) {
+    return (
+      <div className="text-center py-16 space-y-3">
+        <p className="text-sm font-bold text-slate-700">Loading your order…</p>
+      </div>
+    );
+  }
 
   if (!order) {
     return (

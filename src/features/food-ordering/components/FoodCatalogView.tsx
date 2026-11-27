@@ -3,11 +3,15 @@
 import React, { useState, useMemo } from 'react';
 import { INDIAN_FOOD_ITEMS, FOOD_CATEGORIES } from '../data/mockDishes';
 import { useCartStore } from '@/store/cartStore';
-import { Star, Clock, Flame, Plus, Check, Search, Sparkles, SlidersHorizontal } from 'lucide-react';
+import { Star, Clock, Flame, Plus, Check, Search } from 'lucide-react';
 import type { Dish } from '@/types/food';
 import { formatCurrency } from '@/lib/currency';
 
-export function FoodCatalogView() {
+interface FoodCatalogViewProps {
+  onDishAdded?: () => void
+}
+
+export function FoodCatalogView({ onDishAdded }: FoodCatalogViewProps = {}) {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [vegOnly, setVegOnly] = useState(false);
@@ -41,6 +45,7 @@ export function FoodCatalogView() {
 
     setAddedDishId(dish.id);
     setTimeout(() => setAddedDishId(null), 1000);
+    onDishAdded?.()
   };
 
   return (

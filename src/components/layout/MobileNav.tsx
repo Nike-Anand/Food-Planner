@@ -11,7 +11,6 @@ export function MobileNav() {
   const cartCount = useCartStore((state) => state.getTotalCount());
   const cartHasHydrated = useCartStore((state) => state.hasHydrated);
   const activeOrder = useCartStore((state) => state.activeOrder);
-  const orders = useCartStore((state) => state.orders);
 
   // Flagsmith feature flag state
   const [recipeEnabled, setRecipeEnabled] = useState<boolean>(true);
@@ -55,10 +54,14 @@ export function MobileNav() {
       badge: activeOrder && activeOrder.status !== 'delivered' ? 'LIVE' : undefined,
     },
   ];
+  const visibleNavItems =
+    pathname === '/experiment'
+      ? navItems.filter((item) => item.href !== '/order' && item.href !== '/recipe')
+      : navItems;
 
   return (
     <nav className="fixed bottom-0 max-w-[430px] w-full bg-white/95 backdrop-blur-lg border-t border-slate-200/80 px-4 py-2 z-40 flex items-center justify-around shadow-lg">
-      {navItems.map((item) => {
+      {visibleNavItems.map((item) => {
         const Icon = item.icon;
         const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
 
