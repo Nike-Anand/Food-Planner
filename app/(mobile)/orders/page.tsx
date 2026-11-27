@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowLeft, Clock, ShoppingBag, MapPin, ArrowRight } from 'lucide-react'
+import { ArrowLeft, Clock, ArrowRight } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
 import { formatCurrency } from '@/lib/currency'
 
@@ -30,14 +30,18 @@ export default function OrdersPage() {
 
       <header>
         <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">Order History</h1>
-        <p className="text-xs text-slate-500">Track and view your previous food orders</p>
+        <p className="text-xs text-slate-500">
+          Track food orders and recipe ingredient orders separately.
+        </p>
       </header>
 
       {orders.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
           <Clock className="mx-auto h-10 w-10 text-slate-300" />
           <h2 className="mt-3 text-sm font-bold text-slate-800">No orders placed yet</h2>
-          <p className="mt-1 text-xs text-slate-400">Your placed orders will appear here for tracking.</p>
+          <p className="mt-1 text-xs text-slate-400">
+            Food and recipe ingredient orders will appear here separately.
+          </p>
           <Link
             href="/order"
             className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-600 px-5 text-xs font-bold text-white hover:bg-orange-700"
@@ -55,6 +59,13 @@ export default function OrdersPage() {
               <div className="flex items-center justify-between border-b border-slate-50 pb-2.5">
                 <div>
                   <span className="font-mono text-xs font-black text-slate-900">{ord.orderId}</span>
+                  <p className="text-[10px] font-semibold text-orange-700">
+                    {ord.source === 'food_menu'
+                      ? 'Food order'
+                      : ord.source === 'recipe_ingredient'
+                        ? 'Recipe ingredient order'
+                        : 'Combined legacy order'}
+                  </p>
                   <p className="text-[10px] text-slate-400">
                     {new Date(ord.placedAt).toLocaleDateString('en-IN', {
                       month: 'short',

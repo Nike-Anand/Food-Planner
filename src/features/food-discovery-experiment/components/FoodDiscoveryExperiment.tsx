@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { ShoppingBag } from 'lucide-react'
 import { FoodCatalogView } from '@/features/food-ordering/components/FoodCatalogView'
 import { RecipeMakerView } from '@/features/recipe-maker/components/RecipeMakerView'
 import {
@@ -134,6 +136,18 @@ export function FoodDiscoveryExperiment() {
         </p>
       )}
 
+      {isFoodOrdering && (
+        <div className="flex justify-end">
+          <Link
+            href="/cart?source=food_menu"
+            className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-orange-200 bg-white px-4 text-xs font-bold text-orange-700 shadow-sm hover:bg-orange-50"
+          >
+            <ShoppingBag className="h-4 w-4" aria-hidden="true" />
+            View Food Cart
+          </Link>
+        </div>
+      )}
+
       {isFoodOrdering ? (
         <FoodCatalogView
           onDishAdded={() => recordAction('dish_added_to_cart')}
@@ -141,6 +155,7 @@ export function FoodDiscoveryExperiment() {
       ) : (
         <RecipeMakerView
           onRecipeGenerated={() => recordAction('recipe_generated')}
+          showIngredientShoppingActions={false}
         />
       )}
     </div>

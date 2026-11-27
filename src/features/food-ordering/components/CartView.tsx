@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -12,7 +11,6 @@ import {
   Trash2,
   Bike,
   Clock,
-  CheckCircle2,
 } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
 import type { CartItem, CartItemSource } from '@/types/shared'
@@ -20,7 +18,6 @@ import { formatCurrency } from '@/lib/currency'
 
 interface CartItemsSectionProps {
   title: string
-  source: CartItemSource
   items: CartItem[]
   subtotal: number
   onUpdateQuantity: (id: string, delta: number) => void
@@ -29,7 +26,6 @@ interface CartItemsSectionProps {
 
 function CartItemsSection({
   title,
-  source,
   items,
   subtotal,
   onUpdateQuantity,
@@ -114,60 +110,102 @@ function CartItemsSection({
   )
 }
 
-export function CartView() {
+interface CartViewProps {
+  sourceScope?: CartItemSource
+}
+
+export function CartView({ sourceScope }: CartViewProps = {}) {
   const router = useRouter()
   const items = useCartStore((state) => state.items)
   const orders = useCartStore((state) => state.orders)
-  const activeOrder = useCartStore((state) => state.activeOrder)
   const hasHydrated = useCartStore((state) => state.hasHydrated)
-  const totalCount = useCartStore((state) => state.getTotalCount())
-  const subtotal = useCartStore((state) => state.getSubtotal())
   const foodSubtotal = useCartStore((state) => state.getSubtotal('food_menu'))
   const ingredientSubtotal = useCartStore((state) => state.getSubtotal('recipe_ingredient'))
   const clearCart = useCartStore((state) => state.clearCart)
   const updateQuantity = useCartStore((state) => state.updateQuantity)
   const removeItem = useCartStore((state) => state.removeItem)
 
-  const foodItems = items.filter((item) => item.source === 'food_menu')
-  const ingredientItems = items.filter((item) => item.source === 'recipe_ingredient')
-  const hasItems = items.length > 0
+  const visibleItems = sourceScope
+    ? items.filter((item) => item.source === sourceScope)
+    : items
+  const visibleOrders = sourceScope
+    ? orders.filter((order) => order.source === sourceScope)
+    : orders
+  const totalCount = visibleItems.reduce((count, item) => count + item.quantity, 0)
+  const foodItems = visibleItems.filter((item) => item.source === 'food_menu')
+  const ingredientItems = visibleItems.filter((item) => item.source === 'recipe_ingredient')
+  const activeOrders = visibleOrders.filter((order) => order.status !== 'delivered')
+  const hasItems = visibleItems.length > 0
+  const cartTitle =
+    sourceScope === 'food_menu'
+      ? 'Food Cart'
+      : sourceScope === 'recipe_ingredient'
+        ? 'Recipe Ingredient Cart'
+        : 'My Cart'
+  const emptyDescription =
+    sourceScope === 'food_menu'
+      ? 'Add dishes from the food catalog to see them here.'
+      : sourceScope === 'recipe_ingredient'
+        ? 'Add missing recipe ingredients to see them here.'
+        : 'Add delicious food or recipe ingredients to order.'
+  const browseHref =
+    sourceScope === 'recipe_ingredient' ? '/recipe' : '/order'
+  const browseLabel =
+    sourceScope === 'recipe_ingredient' ? 'Return to Recipe Maker' : 'Browse Food Catalog'
 
   return (
     <section className="space-y-4">
-      {/* Active Order Banner if order in progress */}
-      {activeOrder && (
-        <div className="overflow-hidden rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-500 to-teal-600 p-4 text-white shadow-md">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 backdrop-blur-xs">
-                <Bike className="h-4 w-4 text-white" />
-              </span>
-              <div>
-                <p className="text-xs font-black tracking-wide uppercase">Active Order Live</p>
-                <p className="text-[11px] text-emerald-100">
-                  {activeOrder.status === 'delivered' ? 'Delivered successfully' : 'Arriving in ~15-20 mins'}
-                </p>
+      {activeOrders.length > 0 && (
+        <div className="space-y-2">
+          {activeOrders.map((order) => {
+            const orderLabel =
+              order.source === 'food_menu'
+                ? 'Food order'
+                : order.source === 'recipe_ingredient'
+                  ? 'Recipe ingredient order'
+                  : 'Combined legacy order'
+            return (
+              <div
+                key={order.orderId}
+                className="overflow-hidden rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-500 to-teal-600 p-4 text-white shadow-md"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 backdrop-blur-xs">
+                      <Bike className="h-4 w-4 text-white" />
+                    </span>
+                    <div>
+                      <p className="text-xs font-black tracking-wide uppercase">
+                        Active {orderLabel}
+                      </p>
+                      <p className="text-[11px] text-emerald-100">
+                        {order.status.replace('_', ' ')} ·{' '}
+                        {formatCurrency(order.grandTotal, 'INR')}
+                      </p>
+                    </div>
+                  </div>
+                  <Link
+                    href={`/order-status/${order.orderId}${sourceScope ? `?source=${sourceScope}` : ''}`}
+                    className="inline-flex items-center gap-1 rounded-xl bg-white px-3 py-1.5 text-xs font-bold text-emerald-800 shadow-xs hover:bg-emerald-50 active:scale-95 transition-all"
+                  >
+                    Track <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
               </div>
-            </div>
-            <Link
-              href={`/order-status/${activeOrder.orderId}`}
-              className="inline-flex items-center gap-1 rounded-xl bg-white px-3 py-1.5 text-xs font-bold text-emerald-800 shadow-xs hover:bg-emerald-50 active:scale-95 transition-all"
-            >
-              Track <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
+            )
+          })}
         </div>
       )}
 
       <header className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">My Cart</h1>
+          <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">{cartTitle}</h1>
           <p className="text-xs text-slate-500">
             {hasHydrated ? `${totalCount} ${totalCount === 1 ? 'item' : 'items'} in your cart` : 'Restoring cart…'}
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {orders.length > 0 && (
+          {!sourceScope && orders.length > 0 && (
             <Link
               href="/orders"
               className="inline-flex min-h-9 items-center gap-1 rounded-lg px-2.5 text-xs font-bold text-orange-600 hover:bg-orange-50 transition-colors"
@@ -179,7 +217,7 @@ export function CartView() {
           {hasItems && (
             <button
               type="button"
-              onClick={clearCart}
+              onClick={() => clearCart(sourceScope)}
               className="inline-flex min-h-9 items-center gap-1 rounded-lg px-2 text-xs font-semibold text-red-500 hover:bg-red-50"
             >
               <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
@@ -202,23 +240,23 @@ export function CartView() {
           <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center">
             <ShoppingBag className="mx-auto h-10 w-10 text-slate-300" />
             <p className="mt-3 font-bold text-sm text-slate-800">Your cart is empty</p>
-            <p className="mt-1 text-xs text-slate-400">Add delicious food or recipe ingredients to order.</p>
+            <p className="mt-1 text-xs text-slate-400">{emptyDescription}</p>
             <Link
-              href="/order"
+              href={browseHref}
               className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-orange-600 px-5 text-xs font-bold text-white shadow-xs hover:bg-orange-700 active:scale-95 transition-all"
             >
-              Browse Food Catalog <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              {browseLabel} <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Link>
           </div>
 
           {/* Past Orders List right on Empty Cart */}
-          {orders.length > 0 && (
+          {visibleOrders.length > 0 && (
             <section className="space-y-2.5 pt-2">
               <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 px-1">
-                Recent Orders ({orders.length})
+                Recent Orders ({visibleOrders.length})
               </h2>
               <div className="space-y-2.5">
-                {orders.map((ord) => (
+                {visibleOrders.map((ord) => (
                   <div
                     key={ord.orderId}
                     className="overflow-hidden rounded-2xl border border-slate-100 bg-white p-3.5 shadow-xs flex items-center justify-between"
@@ -235,7 +273,7 @@ export function CartView() {
                       </p>
                     </div>
                     <Link
-                      href={`/order-status/${ord.orderId}`}
+                      href={`/order-status/${ord.orderId}${sourceScope ? `?source=${sourceScope}` : ''}`}
                       className="rounded-xl bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-800 hover:bg-slate-200"
                     >
                       View Status
@@ -251,40 +289,48 @@ export function CartView() {
           {foodItems.length > 0 && (
             <CartItemsSection
               title="Food Menu Items"
-              source="food_menu"
               items={foodItems}
               subtotal={foodSubtotal}
-              onUpdateQuantity={updateQuantity}
-              onRemoveItem={removeItem}
+              onUpdateQuantity={(id, delta) => updateQuantity(id, delta, sourceScope)}
+              onRemoveItem={(id) => removeItem(id, sourceScope)}
             />
           )}
           {ingredientItems.length > 0 && (
             <CartItemsSection
               title="Recipe Ingredients"
-              source="recipe_ingredient"
               items={ingredientItems}
               subtotal={ingredientSubtotal}
-              onUpdateQuantity={updateQuantity}
-              onRemoveItem={removeItem}
+              onUpdateQuantity={(id, delta) => updateQuantity(id, delta, sourceScope)}
+              onRemoveItem={(id) => removeItem(id, sourceScope)}
             />
           )}
 
-          {/* Unified Order Total & Checkout CTA */}
           <footer className="space-y-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-xs">
-            <div className="flex justify-between text-sm font-extrabold text-slate-900">
-              <span>Cart Subtotal</span>
-              <span className="text-orange-600">{formatCurrency(subtotal, 'INR')}</span>
-            </div>
             <p className="text-[11px] text-slate-400">
-              Taxes and delivery fee will be calculated at checkout.
+              {sourceScope
+                ? `This cart contains only ${sourceScope === 'food_menu' ? 'food menu items' : 'recipe ingredients'}.`
+                : 'Checkout is separate for food orders and recipe ingredients.'}
             </p>
-            <button
-              type="button"
-              onClick={() => router.push('/checkout')}
-              className="min-h-12 w-full rounded-xl bg-orange-600 px-4 text-sm font-extrabold text-white shadow-md shadow-orange-600/20 hover:bg-orange-700 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
-            >
-              Proceed to Checkout <ArrowRight className="h-4 w-4" />
-            </button>
+            {foodItems.length > 0 && (
+              <button
+                type="button"
+                onClick={() => router.push('/checkout?source=food_menu')}
+                className="min-h-12 w-full rounded-xl bg-orange-600 px-4 text-sm font-extrabold text-white shadow-md shadow-orange-600/20 hover:bg-orange-700 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+              >
+                Checkout Food Order · {formatCurrency(foodSubtotal, 'INR')}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
+            {ingredientItems.length > 0 && (
+              <button
+                type="button"
+                onClick={() => router.push('/checkout?source=recipe_ingredient')}
+                className="min-h-12 w-full rounded-xl bg-amber-600 px-4 text-sm font-extrabold text-white shadow-md shadow-amber-600/20 hover:bg-amber-700 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+              >
+                Checkout Recipe Ingredients · {formatCurrency(ingredientSubtotal, 'INR')}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
           </footer>
         </div>
       )}

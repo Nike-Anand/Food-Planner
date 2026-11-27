@@ -26,9 +26,13 @@ const CATEGORY_ORDER: IngredientCategory[] = ['produce', 'dairy', 'meat', 'pantr
 
 interface RecipeMakerViewProps {
   onRecipeGenerated?: () => void
+  showIngredientShoppingActions?: boolean
 }
 
-export function RecipeMakerView({ onRecipeGenerated }: RecipeMakerViewProps = {}) {
+export function RecipeMakerView({
+  onRecipeGenerated,
+  showIngredientShoppingActions = true,
+}: RecipeMakerViewProps = {}) {
   const router = useRouter();
   const { selectedPantryIngredients, togglePantryIngredient } = useRecipeStore();
   const addIngredientsToCart = useCartStore((state) => state.addIngredientsToCart);
@@ -70,7 +74,7 @@ export function RecipeMakerView({ onRecipeGenerated }: RecipeMakerViewProps = {}
   const handleOrderMissingIngredients = () => {
     addIngredientsToCart(missingIngredients, activeRecipe.title);
     setOrderedMissing(true);
-    setTimeout(() => { router.push('/cart'); }, 900);
+    setTimeout(() => { router.push('/cart?source=recipe_ingredient'); }, 900);
   };
 
   const handleQuickOrder = () => {
@@ -269,9 +273,13 @@ export function RecipeMakerView({ onRecipeGenerated }: RecipeMakerViewProps = {}
                         <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full flex items-center gap-1">
                           <Check className="w-3 h-3" /> In Pantry
                         </span>
-                      ) : (
+                      ) : showIngredientShoppingActions ? (
                         <span className="text-[11px] font-semibold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full">
                           +{formatCurrency(ing.estimatedPrice, ing.currency)}
+                        </span>
+                      ) : (
+                        <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                          Missing
                         </span>
                       )}
                     </div>
@@ -280,7 +288,7 @@ export function RecipeMakerView({ onRecipeGenerated }: RecipeMakerViewProps = {}
               </div>
             </div>
 
-            {missingIngredients.length > 0 && (
+            {showIngredientShoppingActions && missingIngredients.length > 0 && (
               <div className="p-3.5 bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl border border-orange-200/60 space-y-2">
                 <div className="flex items-start justify-between">
                   <div>

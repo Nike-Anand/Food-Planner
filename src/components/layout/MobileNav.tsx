@@ -8,7 +8,19 @@ import { useCartStore } from '@/store/cartStore';
 
 export function MobileNav() {
   const pathname = usePathname();
-  const cartCount = useCartStore((state) => state.getTotalCount());
+  const cartCount = useCartStore((state) => {
+    const source =
+      pathname === '/order'
+        ? 'food_menu'
+        : pathname === '/recipe'
+          ? 'recipe_ingredient'
+          : undefined;
+    return source
+      ? state.items
+          .filter((item) => item.source === source)
+          .reduce((count, item) => count + item.quantity, 0)
+      : state.getTotalCount();
+  });
   const cartHasHydrated = useCartStore((state) => state.hasHydrated);
   const activeOrder = useCartStore((state) => state.activeOrder);
 
@@ -26,6 +38,22 @@ export function MobileNav() {
       .catch((err) => console.warn('Could not read flags:', err));
   }, []);
 
+  if (
+    pathname === '/experiment' ||
+    pathname === '/cart' ||
+    pathname === '/checkout' ||
+    pathname.startsWith('/order-status/')
+  ) {
+    return null;
+  }
+
+  const cartHref =
+    pathname === '/order'
+      ? '/cart?source=food_menu'
+      : pathname === '/recipe'
+        ? '/cart?source=recipe_ingredient'
+        : '/cart';
+
   const navItems = [
     {
       label: 'Order Food',
@@ -41,7 +69,7 @@ export function MobileNav() {
     },
     {
       label: 'My Cart',
-      href: '/cart',
+      href: cartHref,
       icon: ShoppingCart,
       count: cartCount,
       loading: !cartHasHydrated,
@@ -55,9 +83,11 @@ export function MobileNav() {
     },
   ];
   const visibleNavItems =
-    pathname === '/experiment'
-      ? navItems.filter((item) => item.href !== '/order' && item.href !== '/recipe')
-      : navItems;
+    pathname === '/order'
+      ? navItems.filter((item) => item.label === 'Order Food' || item.label === 'My Cart')
+      : pathname === '/recipe'
+        ? navItems.filter((item) => item.label === 'Recipe AI' || item.label === 'My Cart')
+        : navItems;
 
   return (
     <nav className="fixed bottom-0 max-w-[430px] w-full bg-white/95 backdrop-blur-lg border-t border-slate-200/80 px-4 py-2 z-40 flex items-center justify-around shadow-lg">

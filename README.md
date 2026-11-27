@@ -4,14 +4,14 @@ A mobile-first web platform combining Food Ordering with a Recipe Maker & Cook I
 
 ## Features
 - **Feature 1 (Food Ordering)**: Browse 24 local sample dishes, search and filter the catalogue, and manage a cart persisted in browser storage.
-- **Feature 2 (Cook It Yourself / Recipe Maker)**: Dish discovery, cooking steps, pantry ingredients, cost estimation, and Instamart-style ingredient ordering.
+- **Feature 2 (Cook It Yourself / Recipe Maker)**: The standalone recipe experience includes dish discovery, cooking steps, pantry ingredients, cost estimation, and ingredient ordering.
 - **Track 1 Experiment**: The app entry point assigns visitors to food ordering or the pantry recipe experience using a Flagsmith multivariate experiment and records the primary action as an experiment event.
 - **Feature Flags**: `food_discovery_experiment` assigns the entry experience; `cook_yourself_enabled` remains the separate recipe feature gate.
 - **Database**: Supabase + PostgreSQL backs the Feature 2 dish and ingredient API.
 
 ## Currency and Checkout Policy
 
-All food and recipe ingredient prices are displayed in INR. Recipe sample estimates use a fixed demo conversion rate of ₹85 per USD; food menu prices and food ingredient estimates are already in INR. The shared `/cart` shows separate subtotals and a unified demo checkout. It does not process payment; placing a demo order saves it locally and clears the cart.
+All food and recipe ingredient prices are displayed in INR. Recipe sample estimates use a fixed demo conversion rate of ₹85 per USD; food menu prices and food ingredient estimates are already in INR. The shared `/cart` shows separate subtotals and separate checkout actions. Food checkout contains only food-menu items and applies the demo food tax/restaurant-packaging charge. Recipe-ingredient checkout contains only ingredient items and does not apply restaurant packaging charges. Completing one checkout leaves the other feature's cart items untouched. These are demo orders only: no payment is processed, and each order is stored locally.
 
 ## Stack
 - **Next.js 15/16** (App Router)
@@ -48,6 +48,8 @@ The primary `/recipe` demo uses local sample data. The older `/dish/[id]` API-ba
 3. Keep `cook_yourself_enabled` enabled while the recipe variant is being tested.
 4. The experiment entry page uses a persistent anonymous UUID from browser storage. It records one `meal_action_completed` event per anonymous identity, with the assigned variant and completed action as event metadata.
 5. Food ordering is the control action (`dish_added_to_cart`); recipe maker is the treatment action (`recipe_generated`). This measures first-action engagement, not paid orders.
+6. During the experiment, only the food-ordering variant exposes a cart link, and it opens `/cart?source=food_menu`. The recipe variant hides ingredient pricing, cart, and delivery actions; the standalone `/recipe` experience opens `/cart?source=recipe_ingredient` for ingredient ordering. Each scoped cart shows only its matching items and orders.
+7. QA data disclosure: scripted browser validation on November 27, 2026 used a simulated anonymous identity assigned to `home_ingredient_recipe` and sent one `recipe_generated` conversion. Exclude this simulated `meal_action_completed` event and its assignment from real visitor results.
 
 #### 4. Environment Variables
 Copy `.env.example` to `.env.local` and fill in the variables needed by the routes you use. Never put the server-side Flagsmith key in a `NEXT_PUBLIC_` variable.
