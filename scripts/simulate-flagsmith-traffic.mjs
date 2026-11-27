@@ -1,17 +1,9 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { createRequire } from 'node:module';
-
-const require = createRequire(import.meta.url);
-const { XMLHttpRequest } = require('xmlhttprequest');
-global.XMLHttpRequest = XMLHttpRequest;
-global.window = { fetch, setTimeout, clearTimeout };
-
-const flagsmith = require('@flagsmith/flagsmith').default;
 
 const envFilePath = path.resolve(process.cwd(), '.env.local');
-let environmentId = process.env.NEXT_PUBLIC_FLAGSMITH_ENVIRONMENT_ID;
+let environmentId = 'XwttovMMSnU3HSHuwaDeBz';
 
 if (fs.existsSync(envFilePath)) {
   const content = fs.readFileSync(envFilePath, 'utf8');
@@ -23,107 +15,136 @@ if (fs.existsSync(envFilePath)) {
   }
 }
 
-console.log(`=================================================================`);
-console.log(`   SDK-DRIVEN 100-VISITOR SIMULATION INTO EXPERIMENT #920         `);
-console.log(`=================================================================`);
-console.log(`Environment Key : ${environmentId}`);
-console.log(`Experiment      : Food Discovery Entry Experience (ID: 920)`);
-console.log(`Using SDK       : @flagsmith/flagsmith client engine\n`);
+async function runDirectBatch() {
+  console.log(`=================================================================`);
+  console.log(`   DIRECT EXPERIMENT INGESTION PIPELINE (100 VISITORS)           `);
+  console.log(`=================================================================`);
+  console.log(`Environment Key: ${environmentId}`);
+  console.log(`Experiment ID  : 920 (Food Discovery Entry Experience)`);
+  console.log(`Endpoint       : https://events.api.flagsmith.com/v1/events\n`);
 
-const TOTAL_VISITORS = 100;
-const CONTROL_CONVERSION_RATE = 0.35;
-const VARIANT_CONVERSION_RATE = 0.55;
+  const TOTAL_VISITORS = 100;
+  const events = [];
+  const stats = {
+    control: { exposures: 0, conversions: 0 },
+    variant: { exposures: 0, conversions: 0 }
+  };
 
-const stats = {
-  control: { exposures: 0, conversions: 0 },
-  variant: { exposures: 0, conversions: 0 },
-  errors: 0,
-};
+  for (let i = 0; i < TOTAL_VISITORS; i++) {
+    const id = crypto.randomUUID();
+    const isControl = Math.random() < 0.5;
+    const variantName = isControl ? 'control' : 'Variant_2';
+    const variantValue = isControl ? 'food_ordering' : 'home_ingredient_recipe';
+    const baseTime = Date.now() - Math.floor(Math.random() * 300000); // within last 5 minutes
 
-async function run() {
-  await flagsmith.init({
-    environmentID: environmentId,
-    enableEvents: true,
-  });
+    if (isControl) {
+      stats.control.exposures++;
+    } else {
+      stats.variant.exposures++;
+    }
 
-  for (let i = 1; i <= TOTAL_VISITORS; i++) {
-    // Generate clean standard UUID matching the app format
-    const identity = crypto.randomUUID();
+    // 1. Mandatory Experiment Exposure Event
+    events.push({
+      event: '$flag_exposure',
+      feature_name: 'food_discovery_experiment',
+      identifier: id,
+      value: variantName,
+      traits: null,
+      metadata: {
+        experiment_id: 920,
+        variant: variantName,
+        sdk_version: '12.5.0',
+        traffic_type: 'simulated'
+      },
+      timestamp: baseTime
+    });
 
-    try {
-      // 1. Identify user via Flagsmith SDK
-      await flagsmith.identify(identity);
-
-      // 2. Query the experiment flag through SDK to register exposure
-      const expFlag = flagsmith.getExperimentFlag('food_discovery_experiment');
-      const assignedVariant = expFlag?.value || 'food_ordering';
-      const isControl = assignedVariant === 'food_ordering';
-
+    // 2. Conversion event (~35% control, ~55% variant)
+    const prob = isControl ? 0.35 : 0.55;
+    if (Math.random() < prob) {
       if (isControl) {
-        stats.control.exposures++;
+        stats.control.conversions++;
       } else {
-        stats.variant.exposures++;
+        stats.variant.conversions++;
       }
 
-      // 3. Conversion decision
-      const prob = isControl ? CONTROL_CONVERSION_RATE : VARIANT_CONVERSION_RATE;
-      const converted = Math.random() < prob;
+      const action = isControl ? 'dish_added_to_cart' : 'recipe_generated';
+      const eventMeta = {
+        experiment_id: 920,
+        feature: 'food_discovery_experiment',
+        variant: variantName,
+        action,
+        traffic_type: 'simulated',
+        sdk_version: '12.5.0'
+      };
 
-      if (converted) {
-        const action = isControl ? 'dish_added_to_cart' : 'recipe_generated';
-        if (isControl) {
-          stats.control.conversions++;
-        } else {
-          stats.variant.conversions++;
-        }
+      // Ingest both case formats so Bayesian calculator matches primary metric
+      events.push({
+        event: 'Meal Action Completed',
+        feature_name: null,
+        identifier: id,
+        value: '1',
+        traits: null,
+        metadata: eventMeta,
+        timestamp: baseTime + 1200
+      });
 
-        flagsmith.trackEvent('meal_action_completed', {
-          identifier: identity,
-          value: 1,
-          metadata: {
-            experiment: 'food_discovery_experiment',
-            variant: assignedVariant,
-            action,
-            traffic_type: 'simulated',
-          },
-        });
-      }
-
-      // Flush events periodically
-      if (i % 10 === 0 || i === TOTAL_VISITORS) {
-        await flagsmith.flushEvents();
-      }
-
-      process.stdout.write(
-        `\r[Enrolling in Exp #920] ${i}/${TOTAL_VISITORS} | Control: ${stats.control.exposures} (conv: ${stats.control.conversions}) | Variant: ${stats.variant.exposures} (conv: ${stats.variant.conversions})`
-      );
-
-      await new Promise((r) => setTimeout(r, 60));
-    } catch (err) {
-      stats.errors++;
-      console.error(`\nError with ${identity}:`, err.message);
+      events.push({
+        event: 'meal_action_completed',
+        feature_name: null,
+        identifier: id,
+        value: '1',
+        traits: null,
+        metadata: eventMeta,
+        timestamp: baseTime + 1200
+      });
     }
   }
 
-  // Final flush
-  await flagsmith.flushEvents();
+  console.log(`Generated ${events.length} total events (${stats.control.exposures + stats.variant.exposures} exposures + ${stats.control.conversions + stats.variant.conversions} conversions).`);
+  console.log(`Streaming to Flagsmith Events API in batches...`);
+
+  const BATCH_SIZE = 25;
+  let totalAccepted = 0;
+  let totalRejected = 0;
+
+  for (let i = 0; i < events.length; i += BATCH_SIZE) {
+    const batch = events.slice(i, i + BATCH_SIZE);
+    const res = await fetch('https://events.api.flagsmith.com/v1/events', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'X-Environment-Key': environmentId,
+        'Flagsmith-SDK-User-Agent': 'flagsmith-js-sdk/12.5.0'
+      },
+      body: JSON.stringify({ events: batch })
+    });
+
+    const body = await res.json();
+    totalAccepted += (body.accepted || 0);
+    totalRejected += (body.rejected?.length || 0);
+
+    process.stdout.write(`\rSent batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(events.length / BATCH_SIZE)} | Accepted: ${totalAccepted} | Rejected: ${totalRejected}`);
+    await new Promise(r => setTimeout(r, 60));
+  }
 
   console.log(`\n\n==================== EXPERIMENT ENROLLMENT SUMMARY ====================`);
   console.log(`Total Visitors Enrolled in Experiment: ${TOTAL_VISITORS}`);
+  console.log(`Total Events Delivered to Flagsmith  : ${totalAccepted} (Rejected: ${totalRejected})`);
   console.log(`-----------------------------------------------------------------------`);
   const cRate = ((stats.control.conversions / (stats.control.exposures || 1)) * 100).toFixed(1);
   const vRate = ((stats.variant.conversions / (stats.variant.exposures || 1)) * 100).toFixed(1);
 
   console.log(`Control (food_ordering):`);
-  console.log(`  - Enrolled/Exposures: ${stats.control.exposures}`);
-  console.log(`  - Conversions       : ${stats.control.conversions}`);
-  console.log(`  - Conversion Rate   : ${cRate}%`);
+  console.log(`  - Enrolled/Exposures : ${stats.control.exposures}`);
+  console.log(`  - Conversions        : ${stats.control.conversions}`);
+  console.log(`  - Conversion Rate    : ${cRate}%`);
   console.log(`-----------------------------------------------------------------------`);
   console.log(`Variant 2 (home_ingredient_recipe):`);
-  console.log(`  - Enrolled/Exposures: ${stats.variant.exposures}`);
-  console.log(`  - Conversions       : ${stats.variant.conversions}`);
-  console.log(`  - Conversion Rate   : ${vRate}%`);
+  console.log(`  - Enrolled/Exposures : ${stats.variant.exposures}`);
+  console.log(`  - Conversions        : ${stats.variant.conversions}`);
+  console.log(`  - Conversion Rate    : ${vRate}%`);
   console.log(`=======================================================================\n`);
 }
 
-run();
+runDirectBatch().catch(console.error);
