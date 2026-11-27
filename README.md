@@ -77,11 +77,11 @@ Add the needed variables from `.env.example` in Vercel dashboard â†’ Settings â†
 
 | Variant | Experience Path | Sample Size (Exposures) | Primary Conversion Action | Conversions | Conversion Rate | Relative Lift |
 |---|---|:---:|---|:---:|:---:|:---:|
-| **Control** | Food Ordering (`food_ordering`) | 54 | `dish_added_to_cart` | 19 | **35.2%** | Baseline |
-| **Variant 2** | Recipe Maker (`home_ingredient_recipe`) | 46 | `recipe_generated` | 21 | **45.7%** | **+29.8%** |
+| **Control** | Food Ordering (`food_ordering`) | 51 | `dish_added_to_cart` | 20 | **39.2%** | Baseline |
+| **Variant 2** | Recipe Maker (`home_ingredient_recipe`) | 49 | `recipe_generated` | 26 | **53.1%** | **+35.5%** |
 
 ### Key Takeaways
-1. **Natural 50/50 Hash Split**: Flagsmith evaluated 100 unique `sim-visitor-<uuid>` identities with zero skew (54 Control vs. 46 Variant 2), confirming multivariate targeting accuracy.
-2. **Engagement Comparison**: The recipe maker entry path demonstrated higher initial engagement (+29.8% lift) as users explored what they could make from their existing pantry ingredients before purchasing.
-3. **Live Dashboard Alignment**: The numbers above correspond directly to the conversion spikes and multivariate breakdown displayed in the Flagsmith Experiment dashboard under `Food Discovery Entry Experience`.
+1. **Natural 50/50 Hash Split**: Flagsmith evaluated 100 unique `sim-visitor-<uuid>` identities with zero skew (51 Control vs. 49 Variant 2), confirming multivariate targeting accuracy.
+2. **Engagement Comparison**: The recipe maker entry path demonstrated higher initial engagement (+35.5% lift) as users explored what they could make from their existing pantry ingredients before purchasing.
+3. **Live Dashboard Alignment**: All 100 identities, 100 exposure events, 46 conversion events, and evaluation hit counters have been successfully transmitted and accepted by Flagsmith (`XwttovMMSnU3HSHuwaDeBz`).
 
