@@ -1,0 +1,14 @@
+{
+  "totalVisitors": 100,
+  "control": {
+    "exposures": 54,
+    "conversions": 19,
+    "rate": "35.2%"
+  },
+  "variant": {
+    "exposures": 46,
+    "conversions": 21,
+    "rate": "45.7%"
+  },
+  "lift": "+29.8%"
+}
