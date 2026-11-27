@@ -1,75 +1,85 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import {
   CheckCircle2,
-  Clock,
   MapPin,
   ChefHat,
   Bike,
   Home,
   ArrowRight,
-  ShoppingBag,
   Sparkles,
 } from 'lucide-react'
 import { useCartStore, ActiveOrder } from '@/store/cartStore'
 import { formatCurrency } from '@/lib/currency'
 
+const STATUS_STEP: Record<ActiveOrder['status'], number> = {
+  placed: 0,
+  preparing: 1,
+  on_the_way: 2,
+  delivered: 3,
+}
+
 export default function OrderStatusPage() {
-  const params = useParams()
-  const router = useRouter()
-  const orderId = params?.orderId as string
-  const getOrderById = useCartStore((state) => state.getOrderById)
-  const activeOrder = useCartStore((state) => state.activeOrder)
+  const params = useParams<{ orderId: string }>()
+  const orderId = params.orderId
+  const hasHydrated = useCartStore((state) => state.hasHydrated)
+  const order = useCartStore(
+    (state) =>
+      state.orders.find((storedOrder) => storedOrder.orderId === orderId) ??
+      (state.activeOrder?.orderId === orderId ? state.activeOrder : null)
+  )
   const updateOrderStatus = useCartStore((state) => state.updateOrderStatus)
-
-  const [order, setOrder] = useState<ActiveOrder | null>(null)
-  const [currentStep, setCurrentStep] = useState<number>(0)
-  const [minutesLeft, setMinutesLeft] = useState<number>(20)
+  const currentStep = order ? STATUS_STEP[order.status] : 0
+  const minutesLeft = order
+    ? currentStep >= 3
+      ? 0
+      : currentStep >= 2
+        ? 10
+        : order.estimatedDeliveryMinutes || 20
+    : 0
+  const orderPlacedAt = order?.placedAt
 
   useEffect(() => {
-    const found = getOrderById(orderId) || activeOrder
-    if (found) {
-      setOrder(found)
-      setMinutesLeft(found.estimatedDeliveryMinutes || 20)
+    if (!hasHydrated || !orderPlacedAt || currentStep >= 3) {
+      return
     }
-  }, [orderId, getOrderById, activeOrder])
 
-  // Simulate progress across stages for a demo
-  useEffect(() => {
-    if (!order) return
+    const elapsed = Math.max(0, Date.now() - new Date(orderPlacedAt).getTime())
+    const stages: Array<{
+      step: number
+      elapsedAt: number
+      status: ActiveOrder['status']
+    }> = [
+      { step: 1, elapsedAt: 4000, status: 'preparing' },
+      { step: 2, elapsedAt: 10000, status: 'on_the_way' },
+      { step: 3, elapsedAt: 18000, status: 'delivered' },
+    ]
+    const timers = stages
+      .filter((stage) => stage.step > currentStep)
+      .map((stage) =>
+        window.setTimeout(
+          () => updateOrderStatus(orderId, stage.status),
+          Math.max(0, stage.elapsedAt - elapsed)
+        )
+      )
 
-    const t1 = setTimeout(() => {
-      setCurrentStep(1)
-      updateOrderStatus(order.orderId, 'preparing')
-    }, 4000)
+    return () => timers.forEach(window.clearTimeout)
+  }, [hasHydrated, orderId, orderPlacedAt, currentStep, updateOrderStatus])
 
-    const t2 = setTimeout(() => {
-      setCurrentStep(2)
-      updateOrderStatus(order.orderId, 'on_the_way')
-      setMinutesLeft(10)
-    }, 10000)
-
-    const t3 = setTimeout(() => {
-      setCurrentStep(3)
-      updateOrderStatus(order.orderId, 'delivered')
-      setMinutesLeft(0)
-    }, 18000)
-
-    return () => {
-      clearTimeout(t1)
-      clearTimeout(t2)
-      clearTimeout(t3)
-    }
-  }, [order, updateOrderStatus])
-
-  if (!order) {
+  if (!hasHydrated || !order) {
     return (
       <div className="space-y-4 py-8 text-center">
-        <h1 className="text-base font-bold text-slate-800">Looking up order {orderId}...</h1>
-        <p className="text-xs text-slate-500">Please wait or browse the food menu.</p>
+        <h1 className="text-base font-bold text-slate-800">
+          {!hasHydrated ? 'Loading your order…' : `Order ${orderId} was not found`}
+        </h1>
+        <p className="text-xs text-slate-500">
+          {!hasHydrated
+            ? 'Restoring saved order details.'
+            : 'Check the order ID or browse the food menu.'}
+        </p>
         <Link
           href="/order"
           className="mt-3 inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-600 px-5 text-xs font-bold text-white"

@@ -24,7 +24,11 @@ const CATEGORY_LABELS: Record<IngredientCategory, string> = {
 
 const CATEGORY_ORDER: IngredientCategory[] = ['produce', 'dairy', 'meat', 'pantry', 'spices', 'bakery'];
 
-export function RecipeMakerView() {
+interface RecipeMakerViewProps {
+  onRecipeGenerated?: () => void
+}
+
+export function RecipeMakerView({ onRecipeGenerated }: RecipeMakerViewProps = {}) {
   const router = useRouter();
   const { selectedPantryIngredients, togglePantryIngredient } = useRecipeStore();
   const addIngredientsToCart = useCartStore((state) => state.addIngredientsToCart);
@@ -56,7 +60,11 @@ export function RecipeMakerView() {
 
   const handleGenerate = () => {
     setIsGenerating(true);
-    setTimeout(() => { setIsGenerating(false); setHasGenerated(true); }, 1000);
+    setTimeout(() => {
+      setIsGenerating(false);
+      setHasGenerated(true);
+      onRecipeGenerated?.()
+    }, 1000);
   };
 
   const handleOrderMissingIngredients = () => {

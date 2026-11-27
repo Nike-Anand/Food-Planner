@@ -31,7 +31,6 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState('Flat 402, Green Glen Layout, Bellandur, Bengaluru')
   const [deliveryMethod, setDeliveryMethod] = useState<'standard' | 'express'>('express')
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'cod' | 'card'>('upi')
-  const [notes, setNotes] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
 
@@ -56,7 +55,6 @@ export default function CheckoutPage() {
         address,
         deliveryMethod,
         paymentMethod,
-        notes,
       }
       const order = await createOrder(details)
       router.push(`/order-status/${order.orderId}`)
@@ -219,17 +217,22 @@ export default function CheckoutPage() {
           </h2>
 
           <div className="space-y-2">
-            {[
+            {([
               { id: 'upi', label: 'UPI / Google Pay / PhonePe', desc: 'Instant UPI Intent', icon: Zap },
               { id: 'cod', label: 'Cash on Delivery (COD)', desc: 'Pay with cash at doorstep', icon: Banknote },
               { id: 'card', label: 'Credit / Debit Card', desc: 'Visa, Mastercard, RuPay', icon: CreditCard },
-            ].map((method) => {
+            ] satisfies Array<{
+              id: DeliveryDetails['paymentMethod']
+              label: string
+              desc: string
+              icon: typeof Zap
+            }>).map((method) => {
               const Icon = method.icon
               const isSelected = paymentMethod === method.id
               return (
                 <div
                   key={method.id}
-                  onClick={() => setPaymentMethod(method.id as any)}
+                  onClick={() => setPaymentMethod(method.id)}
                   className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ${
                     isSelected
                       ? 'border-orange-600 bg-orange-50/40 ring-1 ring-orange-500/30'
